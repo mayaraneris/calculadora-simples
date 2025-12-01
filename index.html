@@ -1,492 +1,321 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.2">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
-    span.s1 {font-kerning: none}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora para Psicólogas</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="pt-BR"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;Calculadora para Psicólogas&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"&gt;&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"&gt;&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/@babel/standalone/babel.min.js"&gt;&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="root"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script type="text/babel"&gt;</span></p>
-<p class="p1"><span class="s1">const { useState } = React;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">function App() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const [metaMensal, setMetaMensal] = useState(10000);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const [meses, setMeses] = useState(6);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const [valorSessaoDesejado, setValorSessaoDesejado] = useState(150);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const [pacientesAtuais, setPacientesAtuais] = useState(0);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const [valorMedioAtual, setValorMedioAtual] = useState(150);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const [mostrarExplicacao, setMostrarExplicacao] = useState(false);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const [mostrarDicaValor, setMostrarDicaValor] = useState(false);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const calcularResultados = () =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const receitaPorPacienteMensal = valorSessaoDesejado * 4;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const pacientesNecessarios = Math.ceil(metaMensal / receitaPorPacienteMensal);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const faturamentoAtual = pacientesAtuais * valorMedioAtual * 4;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const pacientesFaltando = Math.max(0, pacientesNecessarios - pacientesAtuais);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const pacientesPorMes = meses &gt; 0 ? (pacientesFaltando / meses).toFixed(1) : 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const diasPorPaciente = meses &gt; 0 &amp;&amp; pacientesFaltando &gt; 0 ? Math.round((meses * 30) / pacientesFaltando) : 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const sessoesPorMes = pacientesNecessarios * 4;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const horasPorSemana = pacientesNecessarios * 1;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const faturamentoTotal = metaMensal * meses;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const totalSessoes = sessoesPorMes * meses;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const faturamentoFaltando = metaMensal - faturamentoAtual;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>return {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>pacientesNecessarios,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>pacientesFaltando,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>pacientesPorMes: parseFloat(pacientesPorMes),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>diasPorPaciente,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>faturamentoAtual,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>faturamentoFaltando,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>sessoesPorMes,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>horasPorSemana,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>faturamentoTotal,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>totalSessoes,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>receitaPorPacienteMensal</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>};</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const resultados = calcularResultados();</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const getSugestoes = () =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const sugestoes = [];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// 1. Aumentar honorários (menor esforço, maior impacto)</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (valorSessaoDesejado &lt; 200 &amp;&amp; resultados.pacientesFaltando &gt; 5) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const novoValor = Math.ceil(valorSessaoDesejado * 1.3 / 10) * 10;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const novosPacientesNecessarios = Math.ceil(metaMensal / (novoValor * 4));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const novoPacientesFaltando = Math.max(0, novosPacientesNecessarios - pacientesAtuais);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const reducao = resultados.pacientesFaltando - novoPacientesFaltando;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>sugestoes.push({</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>tipo: 'dica',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>impacto: 'Alto impacto, baixo esforço',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>texto: `Aumentando seus honorários para R$ ${novoValor}, você precisaria captar apenas ${novoPacientesFaltando} pacientes (${reducao} a menos!), mantendo os mesmos R$ ${metaMensal.toLocaleString('pt-BR')}/mês.`</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// 2. Grupos terapêuticos (médio esforço, alto impacto)</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (resultados.pacientesFaltando &gt; 8) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const grupoValor = Math.ceil(valorSessaoDesejado * 0.6 / 10) * 10;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const pessoasPorGrupo = 8;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const receitaGrupoMensal = grupoValor * pessoasPorGrupo * 4;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const pacientesIndividuaisEquivalentes = Math.ceil(receitaGrupoMensal / (valorSessaoDesejado * 4));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const novosPacientesFaltando = Math.max(0, resultados.pacientesFaltando - pacientesIndividuaisEquivalentes);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>sugestoes.push({</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>tipo: 'ideia',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>impacto: 'Alto impacto, médio esforço',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>texto: `Criando 1 grupo terapêutico semanal com 8 pessoas a R$ ${grupoValor}/sessão, você faturaria R$ ${receitaGrupoMensal.toLocaleString('pt-BR')}/mês. Isso reduz sua necessidade de captação de ${resultados.pacientesFaltando} para ${novosPacientesFaltando} pacientes individuais.`</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// 3. Workshops mensais (médio esforço, médio impacto)</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (resultados.pacientesFaltando &gt; 5) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const workshopValor = Math.ceil(valorSessaoDesejado * 1.5 / 10) * 10;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const participantes = 15;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const receitaWorkshop = workshopValor * participantes;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const pacientesEquivalentes = Math.ceil(receitaWorkshop / (valorSessaoDesejado * 4));</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>sugestoes.push({</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>tipo: 'ideia',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>impacto: 'Médio impacto, médio esforço',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>texto: `Um workshop mensal com 15 pessoas a R$ ${workshopValor} geraria R$ ${receitaWorkshop.toLocaleString('pt-BR')}/mês. Isso equivale à renda de ${pacientesEquivalentes} pacientes fixos, reduzindo a necessidade de captação.`</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// 4. Produtos digitais (alto esforço inicial, renda passiva)</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (resultados.pacientesFaltando &gt; 6 || metaMensal &gt; 15000) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const produtoValor = 97;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const vendasMensais = Math.ceil(Math.max(resultados.faturamentoFaltando, 0) * 0.25 / produtoValor);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const receitaProduto = vendasMensais * produtoValor;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const pacientesLiberados = Math.ceil(receitaProduto / (valorSessaoDesejado * 4));</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>sugestoes.push({</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>tipo: 'ideia',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>impacto: 'Médio impacto, alto esforço inicial',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>texto: `Criando um produto digital (e-book/curso) a R$ ${produtoValor} e vendendo ${vendasMensais} unidades/mês, você geraria R$ ${receitaProduto.toLocaleString('pt-BR')}/mês passivamente, reduzindo ${pacientesLiberados} pacientes da meta de captação.`</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Alertas de sobrecarga</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (resultados.pacientesNecessarios &gt; 25) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>sugestoes.push({</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>tipo: 'alerta',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>impacto: 'Atenção necessária',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>texto: `${resultados.pacientesNecessarios} pacientes fixos é insustentável a longo prazo. Você PRECISA diversificar sua renda além da clínica para preservar sua saúde mental e qualidade do atendimento.`</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>} else if (resultados.pacientesNecessarios &gt; 20) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>sugestoes.push({</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>tipo: 'alerta',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>impacto: 'Atenção necessária',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>texto: `${resultados.pacientesNecessarios} pacientes fixos é uma agenda muito cheia. Considere as estratégias acima para reduzir a carga de atendimento mantendo o mesmo faturamento.`</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (resultados.horasPorSemana &gt; 30) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>sugestoes.push({</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>tipo: 'alerta',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>impacto: 'Risco de burnout',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>texto: `${resultados.horasPorSemana}h/semana só em atendimento deixa pouco espaço para supervisão, estudos, documentação e autocuidado. Repense essa meta ou o valor da sessão para uma prática sustentável.`</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (resultados.pacientesFaltando &gt; 0 &amp;&amp; resultados.pacientesFaltando &lt;= 3) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>sugestoes.push({</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>tipo: 'motivacao',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>impacto: 'Você está quase lá!',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>texto: `Faltam apenas ${resultados.pacientesFaltando} paciente${resultados.pacientesFaltando &gt; 1 ? 's' : ''} para atingir sua meta. Continue investindo em divulgação e logo chegará lá!`</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>return sugestoes;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>};</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const sugestoes = getSugestoes();</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return (</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div className="min-h-screen p-4 md:p-8" style={{ background: 'linear-gradient(135deg, #F8F6FA 0%, #E8E3F0 100%)' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div className="max-w-4xl mx-auto"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="text-center mb-12"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#311850' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>Quantos pacientes você precisa?</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/h1&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p className="text-lg" style={{ color: '#7F6A93' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>Calcule quantos pacientes fixos são necessários para atingir sua meta mensal de faturamento</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="bg-white rounded-3xl shadow-xl p-8 md:p-12 mb-8"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{/* Meta Mensal */}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="mb-10"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;label className="flex items-center gap-2 text-lg font-medium mb-4" style={{ color: '#311850' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>💰 Quero faturar por mês (recorrente)</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="text-center mb-4"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span className="text-5xl font-bold" style={{ color: '#45256D' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>R$ {metaMensal.toLocaleString('pt-BR')}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p className="text-sm mt-2" style={{ color: '#7F6A93' }}&gt;por mês, todos os meses&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;input</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>type="range"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>min="2000"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>max="50000"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>step="500"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>value={metaMensal}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>onChange={(e) =&gt; setMetaMensal(Number(e.target.value))}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>style={{ accentColor: '#45256D' }}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="flex justify-between text-sm mt-2" style={{ color: '#9C8FC2' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span&gt;R$ 2.000&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span&gt;R$ 50.000&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{/* Pacientes Atuais */}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="mb-10"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;label className="flex items-center gap-2 text-lg font-medium mb-4" style={{ color: '#311850' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>👥 Quantos pacientes fixos você já tem?</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="text-center mb-4"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span className="text-5xl font-bold" style={{ color: '#45256D' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>{pacientesAtuais}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p className="text-sm mt-2" style={{ color: '#7F6A93' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>{pacientesAtuais === 0 ? 'começando do zero' :</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                 </span>pacientesAtuais === 1 ? 'paciente atual' : 'pacientes atuais'}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;input</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>type="range"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>min="0"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>max="40"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>step="1"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>value={pacientesAtuais}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>onChange={(e) =&gt; setPacientesAtuais(Number(e.target.value))}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>style={{ accentColor: '#45256D' }}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="flex justify-between text-sm mt-2" style={{ color: '#9C8FC2' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span&gt;0&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span&gt;40&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{/* NOVO: Valor Médio Atual - só aparece se tiver pacientes */}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{pacientesAtuais &gt; 0 &amp;&amp; (</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="mb-10 p-6 rounded-2xl" style={{ backgroundColor: '#F8F6FA', border: '2px solid #9C8FC2' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="flex items-center justify-between mb-4"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;label className="flex items-center gap-2 text-lg font-medium" style={{ color: '#311850' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>💵 Valor médio atual por sessão</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;button</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>onClick={() =&gt; setMostrarDicaValor(!mostrarDicaValor)}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>className="text-2xl hover:scale-110 transition-transform"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>style={{ color: '#45256D' }}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>title="Como calcular?"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>ℹ️</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>{mostrarDicaValor &amp;&amp; (</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div className="mb-4 p-4 rounded-lg" style={{ backgroundColor: 'white', border: '1px solid #E8E3F0' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;p className="font-semibold mb-2" style={{ color: '#311850' }}&gt;💡 Como calcular seu valor médio atual?&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;p className="text-sm mb-3" style={{ color: '#7F6A93' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>Some o valor de todas as sessões dos seus pacientes atuais e divida pelo número de pacientes.</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div className="text-sm p-3 rounded" style={{ backgroundColor: '#F8F6FA', color: '#311850' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;p className="font-medium mb-2"&gt;Exemplo:&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;p&gt;• 5 pacientes pagam R$ 150&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;p&gt;• 3 pacientes pagam R$ 120&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;p&gt;• 2 pacientes pagam R$ 180&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;p className="mt-2 font-semibold"&gt;Cálculo: (5×150 + 3×120 + 2×180) ÷ 10 = R$ 150/sessão&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>)}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="text-center mb-4"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;span className="text-5xl font-bold" style={{ color: '#45256D' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>R$ {valorMedioAtual}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;input</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>type="range"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>min="80"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>max="500"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>step="10"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>value={valorMedioAtual}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>onChange={(e) =&gt; setValorMedioAtual(Number(e.target.value))}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>style={{ accentColor: '#45256D' }}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="flex justify-between text-sm mt-2" style={{ color: '#9C8FC2' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;span&gt;R$ 80&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;span&gt;R$ 500&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="mt-4 p-3 rounded-lg" style={{ backgroundColor: 'white' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;p className="text-sm" style={{ color: '#7F6A93' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>💰 Faturamento atual: &lt;span className="font-semibold text-lg" style={{ color: '#311850' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>R$ {resultados.faturamentoAtual.toLocaleString('pt-BR')}/mês</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>)}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{/* Prazo */}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="mb-10"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;label className="flex items-center gap-2 text-lg font-medium mb-4" style={{ color: '#311850' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>📅 Prazo para atingir a meta</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="text-center mb-4"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span className="text-5xl font-bold" style={{ color: '#45256D' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>{meses} {meses === 1 ? 'mês' : 'meses'}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;input</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>type="range"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>min="1"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>max="24"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>step="1"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>value={meses}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>onChange={(e) =&gt; setMeses(Number(e.target.value))}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>style={{ accentColor: '#45256D' }}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="flex justify-between text-sm mt-2" style={{ color: '#9C8FC2' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span&gt;1 mês&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span&gt;24 meses&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{/* Valor da Sessão Desejado */}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="mb-10"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;label className="flex items-center gap-2 text-lg font-medium mb-4" style={{ color: '#311850' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>📈 Valor desejado por sessão (para atingir a meta)</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="text-center mb-4"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span className="text-5xl font-bold" style={{ color: '#45256D' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>R$ {valorSessaoDesejado}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;input</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>type="range"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>min="80"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>max="500"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>step="10"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>value={valorSessaoDesejado}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>onChange={(e) =&gt; setValorSessaoDesejado(Number(e.target.value))}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>style={{ accentColor: '#45256D' }}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="flex justify-between text-sm mt-2" style={{ color: '#9C8FC2' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span&gt;R$ 80&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span&gt;R$ 500&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{/* Resultados */}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="border-t-2 pt-8" style={{ borderColor: '#F8F6FA' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="text-center space-y-6"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>{resultados.pacientesFaltando &gt; 0 ? (</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;p className="text-xl" style={{ color: '#7F6A93' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>Para faturar R$ {metaMensal.toLocaleString('pt-BR')}/mês, você precisa de</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/p&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div className="rounded-2xl p-8 text-white shadow-lg" style={{ background: 'linear-gradient(135deg, #45256D 0%, #311850 100%)' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;p className="text-7xl font-bold mb-2"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>{resultados.pacientesNecessarios}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;p className="text-2xl font-medium"&gt;pacientes fixos no total&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div className="rounded-2xl p-8 shadow-lg text-white" style={{ background: 'linear-gradient(135deg, #9C8FC2 0%, #7F6A93 100%)' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;p className="text-xl mb-3 opacity-90"&gt;Você já tem {pacientesAtuais}, então precisa captar&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;p className="text-6xl font-bold mb-2"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>{resultados.pacientesFaltando}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;p className="text-2xl font-medium"&gt;novos pacientes&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div className="rounded-xl p-6" style={{ backgroundColor: '#F8F6FA', border: '2px solid #9C8FC2' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;p className="text-lg font-semibold mb-3" style={{ color: '#311850' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>📅 Ritmo de captação necessário:</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;div className="grid md:grid-cols-2 gap-4"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;p className="text-4xl font-bold" style={{ color: '#45256D' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                    </span>{resultados.pacientesPorMes}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;p className="text-sm" style={{ color: '#7F6A93' }}&gt;pacientes por mês&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;p className="text-4xl font-bold" style={{ color: '#45256D' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                    </span>{resultados.diasPorPaciente}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;p className="text-sm" style={{ color: '#7F6A93' }}&gt;dias para cada novo paciente&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div className="grid md:grid-cols-2 gap-4 mt-8"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;div className="rounded-xl p-6" style={{ backgroundColor: '#F8F6FA' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;p className="text-4xl font-bold" style={{ color: '#311850' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>{resultados.sessoesPorMes}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;p className="mt-1" style={{ color: '#7F6A93' }}&gt;sessões por mês&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;div className="rounded-xl p-6" style={{ backgroundColor: '#F8F6FA' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;p className="text-4xl font-bold" style={{ color: '#311850' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>{resultados.horasPorSemana}h</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;p className="mt-1" style={{ color: '#7F6A93' }}&gt;de atendimento/semana&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div className="rounded-xl p-6 mt-6" style={{ backgroundColor: '#E8E3F0' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;p className="text-lg" style={{ color: '#311850' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;span className="font-semibold"&gt;Projeção em {meses} {meses === 1 ? 'mês' : 'meses'}:&lt;/span&gt; R$ {resultados.faturamentoTotal.toLocaleString('pt-BR')}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;p className="text-sm mt-2" style={{ color: '#7F6A93' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>Você realizará {resultados.totalSessoes} sessões ao longo desse período</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>) : (</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div className="rounded-2xl p-8 text-white shadow-lg" style={{ background: 'linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;p className="text-3xl mb-3"&gt;🎉 Parabéns!&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;p className="text-xl"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>Você já atingiu sua meta! Com {pacientesAtuais} pacientes faturando em média R$ {valorMedioAtual}/sessão,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>você está gerando &lt;span className="font-bold"&gt;R$ {resultados.faturamentoAtual.toLocaleString('pt-BR')}/mês&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>)}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{/* Sugestões */}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{sugestoes.length &gt; 0 &amp;&amp; resultados.pacientesFaltando &gt; 0 &amp;&amp; (</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="space-y-4"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;h2 className="text-2xl font-bold mb-4" style={{ color: '#311850' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>💡 Estratégias para otimizar sua prática</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/h2&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p className="text-sm mb-6" style={{ color: '#7F6A93' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>Ordenadas do menor esforço para o maior impacto financeiro</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>{sugestoes.map((sugestao, index) =&gt; (</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>key={index}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>className="rounded-2xl p-6"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>style={{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>backgroundColor: sugestao.tipo === 'alerta' ? '#FEF3E2' :</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                   </span>sugestao.tipo === 'dica' ? '#E8F5E8' :</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                   </span>sugestao.tipo === 'motivacao' ? '#E3F2FD' : '#F8F6FA',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>border: `2px solid ${sugestao.tipo === 'alerta' ? '#F59E0B' :</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                        </span>sugestao.tipo === 'dica' ? '#4CAF50' :</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                        </span>sugestao.tipo === 'motivacao' ? '#2196F3' : '#9C8FC2'}`</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>}}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;p className="text-xs font-semibold mb-2 uppercase tracking-wide"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                   </span>style={{ color: sugestao.tipo === 'alerta' ? '#92400E' :</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                  </span>sugestao.tipo === 'dica' ? '#1B5E20' :</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                  </span>sugestao.tipo === 'motivacao' ? '#0D47A1' : '#45256D' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>{sugestao.impacto}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;p className="leading-relaxed"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                   </span>style={{ color: sugestao.tipo === 'alerta' ? '#B45309' : '#311850' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>{sugestao.texto}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>))}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>)}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{/* Rodapé */}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="mt-12 bg-white rounded-2xl p-6 text-sm" style={{ color: '#7F6A93' }}&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p className="font-medium mb-2" style={{ color: '#311850' }}&gt;📋 Considerações importantes:&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;ul className="space-y-1 ml-4"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li&gt;• Cálculos assumem pacientes com frequência semanal (padrão da psicoterapia)&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li&gt;• Considere uma taxa de 10-15% de faltas/remarcações na prática real&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li&gt;• Agenda saudável e sustentável: 15-20 pacientes fixos&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li&gt;• Acima de 25 pacientes: risco significativo de burnout&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li&gt;• O ritmo de captação é uma meta, ajuste conforme sua realidade de divulgação&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>);</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">const root = ReactDOM.createRoot(document.getElementById('root'));</span></p>
-<p class="p1"><span class="s1">root.render(&lt;App /&gt;);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+<div id="root"></div>
+<script type="text/babel">
+const {useState} = React;
+
+function App() {
+    const [metaMensal, setMetaMensal] = useState(10000);
+    const [meses, setMeses] = useState(6);
+    const [valorSessaoDesejado, setValorSessaoDesejado] = useState(150);
+    const [pacientesAtuais, setPacientesAtuais] = useState(0);
+    const [valorMedioAtual, setValorMedioAtual] = useState(150);
+    const [mostrarDicaValor, setMostrarDicaValor] = useState(false);
+
+    const calcularResultados = () => {
+        const receitaPorPacienteMensal = valorSessaoDesejado * 4;
+        const pacientesNecessarios = Math.ceil(metaMensal / receitaPorPacienteMensal);
+        const faturamentoAtual = pacientesAtuais * valorMedioAtual * 4;
+        const pacientesFaltando = Math.max(0, pacientesNecessarios - pacientesAtuais);
+        const pacientesPorMes = meses > 0 ? (pacientesFaltando / meses).toFixed(1) : 0;
+        const diasPorPaciente = meses > 0 && pacientesFaltando > 0 ? Math.round((meses * 30) / pacientesFaltando) : 0;
+        const sessoesPorMes = pacientesNecessarios * 4;
+        const horasPorSemana = pacientesNecessarios * 1;
+        const faturamentoTotal = metaMensal * meses;
+        const totalSessoes = sessoesPorMes * meses;
+        const faturamentoFaltando = metaMensal - faturamentoAtual;
+
+        return {pacientesNecessarios, pacientesFaltando, pacientesPorMes: parseFloat(pacientesPorMes), diasPorPaciente, faturamentoAtual, faturamentoFaltando, sessoesPorMes, horasPorSemana, faturamentoTotal, totalSessoes, receitaPorPacienteMensal};
+    };
+
+    const resultados = calcularResultados();
+
+    const getSugestoes = () => {
+        const sugestoes = [];
+        
+        if (valorSessaoDesejado < 200 && resultados.pacientesFaltando > 5) {
+            const novoValor = Math.ceil(valorSessaoDesejado * 1.3 / 10) * 10;
+            const novosPacientesNecessarios = Math.ceil(metaMensal / (novoValor * 4));
+            const novoPacientesFaltando = Math.max(0, novosPacientesNecessarios - pacientesAtuais);
+            const reducao = resultados.pacientesFaltando - novoPacientesFaltando;
+            
+            sugestoes.push({tipo: 'dica', impacto: 'Alto impacto, baixo esforço', texto: `Aumentando seus honorários para R$ ${novoValor}, você precisaria captar apenas ${novoPacientesFaltando} pacientes (${reducao} a menos!), mantendo os mesmos R$ ${metaMensal.toLocaleString('pt-BR')}/mês.`});
+        }
+        
+        if (resultados.pacientesFaltando > 8) {
+            const grupoValor = Math.ceil(valorSessaoDesejado * 0.6 / 10) * 10;
+            const receitaGrupoMensal = grupoValor * 8 * 4;
+            const pacientesEquiv = Math.ceil(receitaGrupoMensal / (valorSessaoDesejado * 4));
+            const novosFaltando = Math.max(0, resultados.pacientesFaltando - pacientesEquiv);
+            
+            sugestoes.push({tipo: 'ideia', impacto: 'Alto impacto, médio esforço', texto: `Criando 1 grupo terapêutico semanal com 8 pessoas a R$ ${grupoValor}/sessão, você faturaria R$ ${receitaGrupoMensal.toLocaleString('pt-BR')}/mês. Isso reduz sua necessidade de ${resultados.pacientesFaltando} para ${novosFaltando} pacientes individuais.`});
+        }
+        
+        if (resultados.pacientesFaltando > 5) {
+            const workshopValor = Math.ceil(valorSessaoDesejado * 1.5 / 10) * 10;
+            const receitaWorkshop = workshopValor * 15;
+            const pacientesEquiv = Math.ceil(receitaWorkshop / (valorSessaoDesejado * 4));
+            
+            sugestoes.push({tipo: 'ideia', impacto: 'Médio impacto, médio esforço', texto: `Um workshop mensal com 15 pessoas a R$ ${workshopValor} geraria R$ ${receitaWorkshop.toLocaleString('pt-BR')}/mês. Isso equivale a ${pacientesEquiv} pacientes fixos.`});
+        }
+        
+        if (resultados.pacientesFaltando > 6 || metaMensal > 15000) {
+            const produtoValor = 97;
+            const vendasMensais = Math.ceil(Math.max(resultados.faturamentoFaltando, 0) * 0.25 / produtoValor);
+            const receitaProduto = vendasMensais * produtoValor;
+            const pacientesLib = Math.ceil(receitaProduto / (valorSessaoDesejado * 4));
+            
+            sugestoes.push({tipo: 'ideia', impacto: 'Médio impacto, alto esforço inicial', texto: `Criando um produto digital a R$ ${produtoValor} e vendendo ${vendasMensais} unidades/mês, você geraria R$ ${receitaProduto.toLocaleString('pt-BR')}/mês passivamente, reduzindo ${pacientesLib} pacientes da meta.`});
+        }
+        
+        if (resultados.pacientesNecessarios > 25) {
+            sugestoes.push({tipo: 'alerta', impacto: 'Atenção necessária', texto: `${resultados.pacientesNecessarios} pacientes fixos é insustentável. Você PRECISA diversificar sua renda para preservar sua saúde mental.`});
+        } else if (resultados.pacientesNecessarios > 20) {
+            sugestoes.push({tipo: 'alerta', impacto: 'Atenção necessária', texto: `${resultados.pacientesNecessarios} pacientes fixos é uma agenda muito cheia. Considere as estratégias acima.`});
+        }
+        
+        if (resultados.horasPorSemana > 30) {
+            sugestoes.push({tipo: 'alerta', impacto: 'Risco de burnout', texto: `${resultados.horasPorSemana}h/semana só em atendimento deixa pouco espaço para supervisão, estudos e autocuidado.`});
+        }
+        
+        if (resultados.pacientesFaltando > 0 && resultados.pacientesFaltando <= 3) {
+            sugestoes.push({tipo: 'motivacao', impacto: 'Você está quase lá!', texto: `Faltam apenas ${resultados.pacientesFaltando} paciente${resultados.pacientesFaltando > 1 ? 's' : ''} para atingir sua meta!`});
+        }
+        
+        return sugestoes;
+    };
+
+    const sugestoes = getSugestoes();
+
+    return (
+        <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F8F6FA 0%, #E8E3F0 100%)'}}>
+            <div className="max-w-4xl mx-auto">
+                <div className="text-center mb-12">
+                    <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{color: '#311850'}}>
+                        Quantos pacientes você precisa?
+                    </h1>
+                    <p className="text-lg" style={{color: '#7F6A93'}}>
+                        Calcule quantos pacientes fixos são necessários para atingir sua meta mensal
+                    </p>
+                </div>
+
+                <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12 mb-8">
+                    <div className="mb-10">
+                        <label className="text-lg font-medium mb-4 block" style={{color: '#311850'}}>
+                            💰 Quero faturar por mês (recorrente)
+                        </label>
+                        <div className="text-center mb-4">
+                            <span className="text-5xl font-bold" style={{color: '#45256D'}}>
+                                R$ {metaMensal.toLocaleString('pt-BR')}
+                            </span>
+                            <p className="text-sm mt-2" style={{color: '#7F6A93'}}>por mês, todos os meses</p>
+                        </div>
+                        <input type="range" min="2000" max="50000" step="500" value={metaMensal} onChange={(e) => setMetaMensal(Number(e.target.value))} className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer" style={{accentColor: '#45256D'}}/>
+                        <div className="flex justify-between text-sm mt-2" style={{color: '#9C8FC2'}}>
+                            <span>R$ 2.000</span>
+                            <span>R$ 50.000</span>
+                        </div>
+                    </div>
+
+                    <div className="mb-10">
+                        <label className="text-lg font-medium mb-4 block" style={{color: '#311850'}}>
+                            👥 Quantos pacientes fixos você já tem?
+                        </label>
+                        <div className="text-center mb-4">
+                            <span className="text-5xl font-bold" style={{color: '#45256D'}}>{pacientesAtuais}</span>
+                            <p className="text-sm mt-2" style={{color: '#7F6A93'}}>
+                                {pacientesAtuais === 0 ? 'começando do zero' : pacientesAtuais === 1 ? 'paciente atual' : 'pacientes atuais'}
+                            </p>
+                        </div>
+                        <input type="range" min="0" max="40" value={pacientesAtuais} onChange={(e) => setPacientesAtuais(Number(e.target.value))} className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer" style={{accentColor: '#45256D'}}/>
+                        <div className="flex justify-between text-sm mt-2" style={{color: '#9C8FC2'}}>
+                            <span>0</span>
+                            <span>40</span>
+                        </div>
+                    </div>
+
+                    {pacientesAtuais > 0 && (
+                        <div className="mb-10 p-6 rounded-2xl" style={{backgroundColor: '#F8F6FA', border: '2px solid #9C8FC2'}}>
+                            <div className="flex items-center justify-between mb-4">
+                                <label className="text-lg font-medium" style={{color: '#311850'}}>
+                                    💵 Valor médio atual por sessão
+                                </label>
+                                <button onClick={() => setMostrarDicaValor(!mostrarDicaValor)} className="text-2xl hover:scale-110 transition-transform" style={{color: '#45256D'}}>ℹ️</button>
+                            </div>
+
+                            {mostrarDicaValor && (
+                                <div className="mb-4 p-4 rounded-lg" style={{backgroundColor: 'white', border: '1px solid #E8E3F0'}}>
+                                    <p className="font-semibold mb-2" style={{color: '#311850'}}>💡 Como calcular seu valor médio atual?</p>
+                                    <p className="text-sm mb-3" style={{color: '#7F6A93'}}>
+                                        Some o valor de todas as sessões dos seus pacientes atuais e divida pelo número de pacientes.
+                                    </p>
+                                    <div className="text-sm p-3 rounded" style={{backgroundColor: '#F8F6FA', color: '#311850'}}>
+                                        <p className="font-medium mb-2">Exemplo:</p>
+                                        <p>• 5 pacientes pagam R$ 150</p>
+                                        <p>• 3 pacientes pagam R$ 120</p>
+                                        <p>• 2 pacientes pagam R$ 180</p>
+                                        <p className="mt-2 font-semibold">Cálculo: (5×150 + 3×120 + 2×180) ÷ 10 = R$ 150/sessão</p>
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="text-center mb-4">
+                                <span className="text-5xl font-bold" style={{color: '#45256D'}}>R$ {valorMedioAtual}</span>
+                            </div>
+                            <input type="range" min="80" max="500" step="10" value={valorMedioAtual} onChange={(e) => setValorMedioAtual(Number(e.target.value))} className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer" style={{accentColor: '#45256D'}}/>
+                            <div className="flex justify-between text-sm mt-2" style={{color: '#9C8FC2'}}>
+                                <span>R$ 80</span>
+                                <span>R$ 500</span>
+                            </div>
+
+                            <div className="mt-4 p-3 rounded-lg" style={{backgroundColor: 'white'}}>
+                                <p className="text-sm" style={{color: '#7F6A93'}}>
+                                    💰 Faturamento atual: <span className="font-semibold text-lg" style={{color: '#311850'}}>
+                                        R$ {resultados.faturamentoAtual.toLocaleString('pt-BR')}/mês
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="mb-10">
+                        <label className="text-lg font-medium mb-4 block" style={{color: '#311850'}}>
+                            📅 Prazo para atingir a meta
+                        </label>
+                        <div className="text-center mb-4">
+                            <span className="text-5xl font-bold" style={{color: '#45256D'}}>
+                                {meses} {meses === 1 ? 'mês' : 'meses'}
+                            </span>
+                        </div>
+                        <input type="range" min="1" max="24" value={meses} onChange={(e) => setMeses(Number(e.target.value))} className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer" style={{accentColor: '#45256D'}}/>
+                        <div className="flex justify-between text-sm mt-2" style={{color: '#9C8FC2'}}>
+                            <span>1 mês</span>
+                            <span>24 meses</span>
+                        </div>
+                    </div>
+
+                    <div className="mb-10">
+                        <label className="text-lg font-medium mb-4 block" style={{color: '#311850'}}>
+                            📈 Valor desejado por sessão
+                        </label>
+                        <div className="text-center mb-4">
+                            <span className="text-5xl font-bold" style={{color: '#45256D'}}>R$ {valorSessaoDesejado}</span>
+                        </div>
+                        <input type="range" min="80" max="500" step="10" value={valorSessaoDesejado} onChange={(e) => setValorSessaoDesejado(Number(e.target.value))} className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer" style={{accentColor: '#45256D'}}/>
+                        <div className="flex justify-between text-sm mt-2" style={{color: '#9C8FC2'}}>
+                            <span>R$ 80</span>
+                            <span>R$ 500</span>
+                        </div>
+                    </div>
+
+                    <div className="border-t-2 pt-8" style={{borderColor: '#F8F6FA'}}>
+                        <div className="text-center space-y-6">
+                            {resultados.pacientesFaltando > 0 ? (
+                                <>
+                                    <p className="text-xl" style={{color: '#7F6A93'}}>
+                                        Para faturar R$ {metaMensal.toLocaleString('pt-BR')}/mês, você precisa de
+                                    </p>
+
+                                    <div className="rounded-2xl p-8 text-white shadow-lg" style={{background: 'linear-gradient(135deg, #45256D 0%, #311850 100%)'}}>
+                                        <p className="text-7xl font-bold mb-2">{resultados.pacientesNecessarios}</p>
+                                        <p className="text-2xl font-medium">pacientes fixos no total</p>
+                                    </div>
+
+                                    <div className="rounded-2xl p-8 shadow-lg text-white" style={{background: 'linear-gradient(135deg, #9C8FC2 0%, #7F6A93 100%)'}}>
+                                        <p className="text-xl mb-3 opacity-90">Você já tem {pacientesAtuais}, então precisa captar</p>
+                                        <p className="text-6xl font-bold mb-2">{resultados.pacientesFaltando}</p>
+                                        <p className="text-2xl font-medium">novos pacientes</p>
+                                    </div>
+
+                                    <div className="rounded-xl p-6" style={{backgroundColor: '#F8F6FA', border: '2px solid #9C8FC2'}}>
+                                        <p className="text-lg font-semibold mb-3" style={{color: '#311850'}}>
+                                            📅 Ritmo de captação necessário:
+                                        </p>
+                                        <div className="grid md:grid-cols-2 gap-4">
+                                            <div>
+                                                <p className="text-4xl font-bold" style={{color: '#45256D'}}>{resultados.pacientesPorMes}</p>
+                                                <p className="text-sm" style={{color: '#7F6A93'}}>pacientes por mês</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-4xl font-bold" style={{color: '#45256D'}}>{resultados.diasPorPaciente}</p>
+                                                <p className="text-sm" style={{color: '#7F6A93'}}>dias para cada novo paciente</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="rounded-2xl p-8 text-white shadow-lg" style={{background: 'linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)'}}>
+                                    <p className="text-3xl mb-3">🎉 Parabéns!</p>
+                                    <p className="text-xl">Você já atingiu sua meta!</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                {sugestoes.length > 0 && resultados.pacientesFaltando > 0 && (
+                    <div className="space-y-4">
+                        <h2 className="text-2xl font-bold mb-4" style={{color: '#311850'}}>
+                            💡 Estratégias para otimizar sua prática
+                        </h2>
+                        <p className="text-sm mb-6" style={{color: '#7F6A93'}}>
+                            Ordenadas do menor esforço para o maior impacto financeiro
+                        </p>
+                        {sugestoes.map((sugestao, index) => (
+                            <div key={index} className="rounded-2xl p-6" style={{
+                                backgroundColor: sugestao.tipo === 'alerta' ? '#FEF3E2' : sugestao.tipo === 'dica' ? '#E8F5E8' : sugestao.tipo === 'motivacao' ? '#E3F2FD' : '#F8F6FA',
+                                border: `2px solid ${sugestao.tipo === 'alerta' ? '#F59E0B' : sugestao.tipo === 'dica' ? '#4CAF50' : sugestao.tipo === 'motivacao' ? '#2196F3' : '#9C8FC2'}`
+                            }}>
+                                <p className="text-xs font-semibold mb-2 uppercase tracking-wide" style={{color: sugestao.tipo === 'alerta' ? '#92400E' : sugestao.tipo === 'dica' ? '#1B5E20' : sugestao.tipo === 'motivacao' ? '#0D47A1' : '#45256D'}}>
+                                    {sugestao.impacto}
+                                </p>
+                                <p className="leading-relaxed" style={{color: sugestao.tipo === 'alerta' ? '#B45309' : '#311850'}}>
+                                    {sugestao.texto}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                <div className="mt-12 bg-white rounded-2xl p-6 text-sm" style={{color: '#7F6A93'}}>
+                    <p className="font-medium mb-2" style={{color: '#311850'}}>📋 Considerações importantes:</p>
+                    <ul className="space-y-1 ml-4">
+                        <li>• Cálculos assumem pacientes com frequência semanal</li>
+                        <li>• Considere 10-15% de faltas/remarcações</li>
+                        <li>• Agenda saudável: 15-20 pacientes fixos</li>
+                        <li>• Acima de 25 pacientes: risco de burnout</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=0.75, maximum-scale=1.0, user-scalable=yes" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Pastebin.com - Not Found (#404)</title>
+</head>
+<body>
+
+
+<h1>Not Found (#404)</h1>
+<p>This page is no longer available. It has either expired, been removed by its creator, or removed by one of the Pastebin staff.</p>
+
 </body>
 </html>
