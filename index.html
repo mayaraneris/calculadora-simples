@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora para Psicólogas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+const { useState } = React;
+
+function App() {
+    const [metaMensal, setMetaMensal] = useState(10000);
+    const [meses, setMeses] = useState(6);
+    const [valorSessao, setValorSessao] = useState(150);
+    const [pacientesAtuais, setPacientesAtuais] = useState(0);
+    const [mostrarExplicacao, setMostrarExplicacao] = useState(false);
+
+    const calcularResultados = () => {
+        const receitaPorPacienteMensal = valorSessao * 4;
+        const pacientesNecessarios = Math.ceil(metaMensal / receitaPorPacienteMensal);
+        const pacientesFaltando = Math.max(0, pacientesNecessarios - pacientesAtuais);
+        const pacientesPorMes = meses > 0 ? (pacientesFaltando / meses).toFixed(1) : 0;
+        const diasPorPaciente = meses > 0 && pacientesFaltando > 0 ? Math.round((meses * 30) / pacientesFaltando) : 0;
+        const faturamentoAtual = pacientesAtuais * receitaPorPacienteMensal;
+        const sessoesPorMes = pacientesNecessarios * 4;
+        const horasPorSemana = pacientesNecessarios * 1;
+        const faturamentoTotal = metaMensal * meses;
+        const totalSessoes = sessoesPorMes * meses;
+
+        return {
+            pacientesNecessarios,
+            pacientesFaltando,
+            pacientesPorMes: parseFloat(pacientesPorMes),
+            diasPorPaciente,
+            faturamentoAtual,
+            sessoesPorMes,
+            horasPorSemana,
+            faturamentoTotal,
+            totalSessoes,
+            receitaPorPacienteMensal
+        };
+    };
+
+    const resultados = calcularResultados();
+
+    return (
+        <div className="min-h-screen p-4 md:p-8" style={{ background: 'linear-gradient(135deg, #F8F6FA 0%, #E8E3F0 100%)' }}>
+            <div className="max-w-4xl mx-auto">
+                <div className="text-center mb-12">
+                    <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#311850' }}>
+                        Quantos pacientes você precisa?
+                    </h1>
+                    <p className="text-lg" style={{ color: '#7F6A93' }}>
+                        Calcule quantos pacientes fixos são necessários para atingir sua meta mensal de faturamento
+                    </p>
+                </div>
+
+                <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12 mb-8">
+                    <div className="mb-10">
+                        <label className="flex items-center gap-2 text-lg font-medium mb-4" style={{ color: '#311850' }}>
+                            💰 Quero faturar por mês (recorrente)
+                        </label>
+                        <div className="text-center mb-4">
+                            <span className="text-5xl font-bold" style={{ color: '#45256D' }}>
+                                R$ {metaMensal.toLocaleString('pt-BR')}
+                            </span>
+                            <p className="text-sm mt-2" style={{ color: '#7F6A93' }}>por mês, todos os meses</p>
+                        </div>
+                        <input
+                            type="range"
+                            min="2000"
+                            max="50000"
+                            step="500"
+                            value={metaMensal}
+                            onChange={(e) => setMetaMensal(Number(e.target.value))}
+                            className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer"
+                            style={{ accentColor: '#45256D' }}
+                        />
+                        <div className="flex justify-between text-sm mt-2" style={{ color: '#9C8FC2' }}>
+                            <span>R$ 2.000</span>
+                            <span>R$ 50.000</span>
+                        </div>
+                    </div>
+
+                    <div className="mb-10">
+                        <label className="flex items-center gap-2 text-lg font-medium mb-4" style={{ color: '#311850' }}>
+                            👥 Quantos pacientes fixos você já tem?
+                        </label>
+                        <div className="text-center mb-4">
+                            <span className="text-5xl font-bold" style={{ color: '#45256D' }}>
+                                {pacientesAtuais}
+                            </span>
+                            <p className="text-sm mt-2" style={{ color: '#7F6A93' }}>
+                                {pacientesAtuais === 0 ? 'começando do zero' :
+                                 pacientesAtuais === 1 ? 'paciente atual' : 'pacientes atuais'}
+                            </p>
+                        </div>
+                        <input
+                            type="range"
+                            min="0"
+                            max="40"
+                            step="1"
+                            value={pacientesAtuais}
+                            onChange={(e) => setPacientesAtuais(Number(e.target.value))}
+                            className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer"
+                            style={{ accentColor: '#45256D' }}
+                        />
+                        <div className="flex justify-between text-sm mt-2" style={{ color: '#9C8FC2' }}>
+                            <span>0</span>
+                            <span>40</span>
+                        </div>
+                        {pacientesAtuais > 0 && (
+                            <div className="mt-3 p-3 rounded-lg" style={{ backgroundColor: '#F8F6FA' }}>
+                                <p className="text-sm" style={{ color: '#7F6A93' }}>
+                                    💰 Faturamento atual: <span className="font-semibold" style={{ color: '#311850' }}>
+                                        R$ {resultados.faturamentoAtual.toLocaleString('pt-BR')}/mês
+                                    </span>
+                                </p>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="mb-10">
+                        <label className="flex items-center gap-2 text-lg font-medium mb-4" style={{ color: '#311850' }}>
+                            📅 Prazo para atingir a meta
+                        </label>
+                        <div className="text-center mb-4">
+                            <span className="text-5xl font-bold" style={{ color: '#45256D' }}>
+                                {meses} {meses === 1 ? 'mês' : 'meses'}
+                            </span>
+                        </div>
+                        <input
+                            type="range"
+                            min="1"
+                            max="24"
+                            step="1"
+                            value={meses}
+                            onChange={(e) => setMeses(Number(e.target.value))}
+                            className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer"
+                            style={{ accentColor: '#45256D' }}
+                        />
+                        <div className="flex justify-between text-sm mt-2" style={{ color: '#9C8FC2' }}>
+                            <span>1 mês</span>
+                            <span>24 meses</span>
+                        </div>
+                    </div>
+
+                    <div className="mb-10">
+                        <label className="flex items-center gap-2 text-lg font-medium mb-4" style={{ color: '#311850' }}>
+                            📈 Valor por sessão individual
+                        </label>
+                        <div className="text-center mb-4">
+                            <span className="text-5xl font-bold" style={{ color: '#45256D' }}>
+                                R$ {valorSessao}
+                            </span>
+                        </div>
+                        <input
+                            type="range"
+                            min="80"
+                            max="500"
+                            step="10"
+                            value={valorSessao}
+                            onChange={(e) => setValorSessao(Number(e.target.value))}
+                            className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer"
+                            style={{ accentColor: '#45256D' }}
+                        />
+                        <div className="flex justify-between text-sm mt-2" style={{ color: '#9C8FC2' }}>
+                            <span>R$ 80</span>
+                            <span>R$ 500</span>
+                        </div>
+                    </div>
+                    <div className="border-t-2 pt-8" style={{ borderColor: '#F8F6FA' }}>
+                        <div className="text-center space-y-6">
+                            {resultados.pacientesFaltando > 0 ? (
+                                <>
+                                    <p className="text-xl" style={{ color: '#7F6A93' }}>
+                                        Para faturar R$ {metaMensal.toLocaleString('pt-BR')}/mês, você precisa de
+                                    </p>
+
+                                    <div className="rounded-2xl p-8 text-white shadow-lg" style={{ background: 'linear-gradient(135deg, #45256D 0%, #311850 100%)' }}>
+                                        <p className="text-7xl font-bold mb-2">
+                                            {resultados.pacientesNecessarios}
+                                        </p>
+                                        <p className="text-2xl font-medium">pacientes fixos no total</p>
+                                    </div>
+
+                                    <div className="rounded-2xl p-8 shadow-lg text-white" style={{ background: 'linear-gradient(135deg, #9C8FC2 0%, #7F6A93 100%)' }}>
+                                        <p className="text-xl mb-3 opacity-90">Você já tem {pacientesAtuais}, então precisa captar</p>
+                                        <p className="text-6xl font-bold mb-2">
+                                            {resultados.pacientesFaltando}
+                                        </p>
+                                        <p className="text-2xl font-medium">novos pacientes</p>
+                                    </div>
+
+                                    <div className="rounded-xl p-6" style={{ backgroundColor: '#F8F6FA', border: '2px solid #9C8FC2' }}>
+                                        <p className="text-lg font-semibold mb-3" style={{ color: '#311850' }}>
+                                            📅 Ritmo de captação necessário:
+                                        </p>
+                                        <div className="grid md:grid-cols-2 gap-4">
+                                            <div>
+                                                <p className="text-4xl font-bold" style={{ color: '#45256D' }}>
+                                                    {resultados.pacientesPorMes}
+                                                </p>
+                                                <p className="text-sm" style={{ color: '#7F6A93' }}>pacientes por mês</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-4xl font-bold" style={{ color: '#45256D' }}>
+                                                    {resultados.diasPorPaciente}
+                                                </p>
+                                                <p className="text-sm" style={{ color: '#7F6A93' }}>dias para cada novo paciente</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid md:grid-cols-2 gap-4 mt-8">
+                                        <div className="rounded-xl p-6" style={{ backgroundColor: '#F8F6FA' }}>
+                                            <p className="text-4xl font-bold" style={{ color: '#311850' }}>
+                                                {resultados.sessoesPorMes}
+                                            </p>
+                                            <p className="mt-1" style={{ color: '#7F6A93' }}>sessões por mês</p>
+                                        </div>
+                                        <div className="rounded-xl p-6" style={{ backgroundColor: '#F8F6FA' }}>
+                                            <p className="text-4xl font-bold" style={{ color: '#311850' }}>
+                                                {resultados.horasPorSemana}h
+                                            </p>
+                                            <p className="mt-1" style={{ color: '#7F6A93' }}>de atendimento/semana</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="rounded-xl p-6 mt-6" style={{ backgroundColor: '#E8E3F0' }}>
+                                        <p className="text-lg" style={{ color: '#311850' }}>
+                                            <span className="font-semibold">Projeção em {meses} {meses === 1 ? 'mês' : 'meses'}:</span> R$ {resultados.faturamentoTotal.toLocaleString('pt-BR')}
+                                        </p>
+                                        <p className="text-sm mt-2" style={{ color: '#7F6A93' }}>
+                                            Você realizará {resultados.totalSessoes} sessões ao longo desse período
+                                        </p>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="rounded-2xl p-8 text-white shadow-lg" style={{ background: 'linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)' }}>
+                                    <p className="text-3xl mb-3">🎉 Parabéns!</p>
+                                    <p className="text-xl">
+                                        Você já atingiu sua meta! Com {pacientesAtuais} pacientes a R$ {valorSessao}/sessão,
+                                        você está faturando <span className="font-bold">R$ {resultados.faturamentoAtual.toLocaleString('pt-BR')}/mês</span>
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+                <div className="mt-12 bg-white rounded-2xl p-6 text-sm" style={{ color: '#7F6A93' }}>
+                    <p className="font-medium mb-2" style={{ color: '#311850' }}>📋 Considerações importantes:</p>
+                    <ul className="space-y-1 ml-4">
+                        <li>• Cálculos assumem pacientes com frequência semanal (padrão da psicoterapia)</li>
+                        <li>• Considere uma taxa de 10-15% de faltas/remarcações na prática real</li>
+                        <li>• Agenda saudável e sustentável: 15-20 pacientes fixos</li>
+                        <li>• Acima de 25 pacientes: risco significativo de burnout</li>
+                        <li>• O ritmo de captação é uma meta, ajuste conforme sua realidade de divulgação</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+    </script>
+</body>
+</html>
