@@ -3,11 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora para Psicólogas</title>
+<title>Calculadora de Pacientes | Planejamento Financeiro para Psicólogas</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto',sans-serif}
+.custom-range::-webkit-slider-thumb{appearance:none;width:20px;height:20px;border-radius:50%;background:#45256D;cursor:pointer}
+.custom-range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#45256D;cursor:pointer;border:none}
+</style>
 </head>
 <body>
 <div id="root"></div>
@@ -20,22 +25,31 @@ function App() {
     const [valorSessaoDesejado, setValorSessaoDesejado] = useState(150);
     const [pacientesAtuais, setPacientesAtuais] = useState(0);
     const [valorMedioAtual, setValorMedioAtual] = useState(150);
+    const [frequencia, setFrequencia] = useState('semanal');
     const [mostrarDicaValor, setMostrarDicaValor] = useState(false);
+    const [mostrarComoFunciona, setMostrarComoFunciona] = useState(false);
+    const [mostrarCalculo, setMostrarCalculo] = useState(false);
+    const [mostrarFormulario, setMostrarFormulario] = useState(false);
+    const [nome, setNome] = useState('');
+    const [email, setEmail] = useState('');
+    const [telefone, setTelefone] = useState('');
+
+    const sessoesPorMes = frequencia === 'semanal' ? 4 : 2;
 
     const calcularResultados = () => {
-        const receitaPorPacienteMensal = valorSessaoDesejado * 4;
+        const receitaPorPacienteMensal = valorSessaoDesejado * sessoesPorMes;
         const pacientesNecessarios = Math.ceil(metaMensal / receitaPorPacienteMensal);
-        const faturamentoAtual = pacientesAtuais * valorMedioAtual * 4;
+        const faturamentoAtual = pacientesAtuais * valorMedioAtual * sessoesPorMes;
         const pacientesFaltando = Math.max(0, pacientesNecessarios - pacientesAtuais);
         const pacientesPorMes = meses > 0 ? (pacientesFaltando / meses).toFixed(1) : 0;
         const diasPorPaciente = meses > 0 && pacientesFaltando > 0 ? Math.round((meses * 30) / pacientesFaltando) : 0;
-        const sessoesPorMes = pacientesNecessarios * 4;
-        const horasPorSemana = pacientesNecessarios * 1;
+        const totalSessoesMes = pacientesNecessarios * sessoesPorMes;
+        const horasPorSemana = frequencia === 'semanal' ? pacientesNecessarios : Math.ceil(pacientesNecessarios / 2);
         const faturamentoTotal = metaMensal * meses;
-        const totalSessoes = sessoesPorMes * meses;
+        const totalSessoes = totalSessoesMes * meses;
         const faturamentoFaltando = metaMensal - faturamentoAtual;
 
-        return {pacientesNecessarios, pacientesFaltando, pacientesPorMes: parseFloat(pacientesPorMes), diasPorPaciente, faturamentoAtual, faturamentoFaltando, sessoesPorMes, horasPorSemana, faturamentoTotal, totalSessoes, receitaPorPacienteMensal};
+        return {pacientesNecessarios, pacientesFaltando, pacientesPorMes: parseFloat(pacientesPorMes), diasPorPaciente, faturamentoAtual, faturamentoFaltando, totalSessoesMes, horasPorSemana, faturamentoTotal, totalSessoes, receitaPorPacienteMensal};
     };
 
     const resultados = calcularResultados();
@@ -45,51 +59,51 @@ function App() {
         
         if (valorSessaoDesejado < 200 && resultados.pacientesFaltando > 5) {
             const novoValor = Math.ceil(valorSessaoDesejado * 1.3 / 10) * 10;
-            const novosPacientesNecessarios = Math.ceil(metaMensal / (novoValor * 4));
+            const novosPacientesNecessarios = Math.ceil(metaMensal / (novoValor * sessoesPorMes));
             const novoPacientesFaltando = Math.max(0, novosPacientesNecessarios - pacientesAtuais);
             const reducao = resultados.pacientesFaltando - novoPacientesFaltando;
             
-            sugestoes.push({tipo: 'dica', impacto: 'Alto impacto, baixo esforço', texto: `Aumentando seus honorários para R$ ${novoValor}, você precisaria captar apenas ${novoPacientesFaltando} pacientes (${reducao} a menos!), mantendo os mesmos R$ ${metaMensal.toLocaleString('pt-BR')}/mês.`});
+            sugestoes.push({tipo: 'dica', impacto: 'Alto impacto, baixo esforço', texto: `Aumentando seus honorários para R$ ${novoValor}, você precisaria captar apenas ${novoPacientesFaltando} pacientes (${reducao} a menos), mantendo a mesma meta.`});
         }
         
         if (resultados.pacientesFaltando > 8) {
             const grupoValor = Math.ceil(valorSessaoDesejado * 0.6 / 10) * 10;
             const receitaGrupoMensal = grupoValor * 8 * 4;
-            const pacientesEquiv = Math.ceil(receitaGrupoMensal / (valorSessaoDesejado * 4));
+            const pacientesEquiv = Math.ceil(receitaGrupoMensal / (valorSessaoDesejado * sessoesPorMes));
             const novosFaltando = Math.max(0, resultados.pacientesFaltando - pacientesEquiv);
             
-            sugestoes.push({tipo: 'ideia', impacto: 'Alto impacto, médio esforço', texto: `Criando 1 grupo terapêutico semanal com 8 pessoas a R$ ${grupoValor}/sessão, você faturaria R$ ${receitaGrupoMensal.toLocaleString('pt-BR')}/mês. Isso reduz sua necessidade de ${resultados.pacientesFaltando} para ${novosFaltando} pacientes individuais.`});
+            sugestoes.push({tipo: 'ideia', impacto: 'Alto impacto, médio esforço', texto: `Grupo terapêutico semanal com 8 pessoas a R$ ${grupoValor}/sessão geraria R$ ${receitaGrupoMensal.toLocaleString('pt-BR')}/mês, reduzindo a necessidade de ${resultados.pacientesFaltando} para ${novosFaltando} atendimentos individuais.`});
         }
         
         if (resultados.pacientesFaltando > 5) {
             const workshopValor = Math.ceil(valorSessaoDesejado * 1.5 / 10) * 10;
             const receitaWorkshop = workshopValor * 15;
-            const pacientesEquiv = Math.ceil(receitaWorkshop / (valorSessaoDesejado * 4));
+            const pacientesEquiv = Math.ceil(receitaWorkshop / (valorSessaoDesejado * sessoesPorMes));
             
-            sugestoes.push({tipo: 'ideia', impacto: 'Médio impacto, médio esforço', texto: `Um workshop mensal com 15 pessoas a R$ ${workshopValor} geraria R$ ${receitaWorkshop.toLocaleString('pt-BR')}/mês. Isso equivale a ${pacientesEquiv} pacientes fixos.`});
+            sugestoes.push({tipo: 'ideia', impacto: 'Médio impacto, médio esforço', texto: `Workshop mensal com 15 participantes a R$ ${workshopValor} geraria R$ ${receitaWorkshop.toLocaleString('pt-BR')}/mês, equivalente a ${pacientesEquiv} pacientes fixos.`});
         }
         
         if (resultados.pacientesFaltando > 6 || metaMensal > 15000) {
             const produtoValor = 97;
             const vendasMensais = Math.ceil(Math.max(resultados.faturamentoFaltando, 0) * 0.25 / produtoValor);
             const receitaProduto = vendasMensais * produtoValor;
-            const pacientesLib = Math.ceil(receitaProduto / (valorSessaoDesejado * 4));
+            const pacientesLib = Math.ceil(receitaProduto / (valorSessaoDesejado * sessoesPorMes));
             
-            sugestoes.push({tipo: 'ideia', impacto: 'Médio impacto, alto esforço inicial', texto: `Criando um produto digital a R$ ${produtoValor} e vendendo ${vendasMensais} unidades/mês, você geraria R$ ${receitaProduto.toLocaleString('pt-BR')}/mês passivamente, reduzindo ${pacientesLib} pacientes da meta.`});
+            sugestoes.push({tipo: 'ideia', impacto: 'Médio impacto, alto esforço inicial', texto: `Produto digital a R$ ${produtoValor} vendendo ${vendasMensais} unidades/mês geraria R$ ${receitaProduto.toLocaleString('pt-BR')}/mês de renda passiva, reduzindo ${pacientesLib} pacientes da meta.`});
         }
         
         if (resultados.pacientesNecessarios > 25) {
-            sugestoes.push({tipo: 'alerta', impacto: 'Atenção necessária', texto: `${resultados.pacientesNecessarios} pacientes fixos é insustentável. Você PRECISA diversificar sua renda para preservar sua saúde mental.`});
+            sugestoes.push({tipo: 'alerta', impacto: 'Atenção necessária', texto: `${resultados.pacientesNecessarios} pacientes fixos é insustentável a longo prazo. É fundamental diversificar suas fontes de renda.`});
         } else if (resultados.pacientesNecessarios > 20) {
-            sugestoes.push({tipo: 'alerta', impacto: 'Atenção necessária', texto: `${resultados.pacientesNecessarios} pacientes fixos é uma agenda muito cheia. Considere as estratégias acima.`});
+            sugestoes.push({tipo: 'alerta', impacto: 'Atenção necessária', texto: `${resultados.pacientesNecessarios} pacientes fixos representa uma agenda muito cheia. Considere as estratégias de otimização acima.`});
         }
         
         if (resultados.horasPorSemana > 30) {
-            sugestoes.push({tipo: 'alerta', impacto: 'Risco de burnout', texto: `${resultados.horasPorSemana}h/semana só em atendimento deixa pouco espaço para supervisão, estudos e autocuidado.`});
+            sugestoes.push({tipo: 'alerta', impacto: 'Risco de burnout', texto: `${resultados.horasPorSemana}h semanais de atendimento deixa pouco espaço para supervisão, estudos, documentação e autocuidado.`});
         }
         
         if (resultados.pacientesFaltando > 0 && resultados.pacientesFaltando <= 3) {
-            sugestoes.push({tipo: 'motivacao', impacto: 'Você está quase lá!', texto: `Faltam apenas ${resultados.pacientesFaltando} paciente${resultados.pacientesFaltando > 1 ? 's' : ''} para atingir sua meta!`});
+            sugestoes.push({tipo: 'motivacao', impacto: 'Você está quase lá', texto: `Faltam apenas ${resultados.pacientesFaltando} paciente${resultados.pacientesFaltando > 1 ? 's' : ''} para atingir sua meta. Continue!`});
         }
         
         return sugestoes;
@@ -97,507 +111,357 @@ function App() {
 
     const sugestoes = getSugestoes();
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        alert(`Obrigada, ${nome}! Em breve entraremos em contato via ${email} ou ${telefone} com seu diagnóstico personalizado.`);
+        setMostrarFormulario(false);
+    };
+
     return (
-        <div className="min-h-screen p-3 md:p-6" style={{background: 'linear-gradient(135deg, #F8F6FA 0%, #E8E3F0 100%)'}}>
-            <div className="max-w-3xl mx-auto">
-                <div className="text-center mb-8">
-                    <h1 className="text-3xl md:text-4xl font-bold mb-2" style={{color: '#311850'}}>
-                        Quantos pacientes você precisa?
-                    </h1>
-                    <p className="text-base" style={{color: '#7F6A93'}}>
-                        Calcule quantos pacientes fixos são necessários para atingir sua meta mensal
-                    </p>
-                </div>
-
-                <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
-                    <div className="mb-6">
-                        <label className="text-base font-medium mb-3 block" style={{color: '#311850'}}>
-                            💰 Quero faturar por mês
-                        </label>
-                        <div className="text-center mb-3">
-                            <span className="text-4xl font-bold" style={{color: '#45256D'}}>
-                                R$ {metaMensal.toLocaleString('pt-BR')}
-                            </span>
-                        </div>
-                        <input type="range" min="2000" max="50000" step="500" value={metaMensal} onChange={(e) => setMetaMensal(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg cursor-pointer" style={{accentColor: '#45256D'}}/>
+        <div className="min-h-screen" style={{background: 'linear-gradient(180deg, #F8F6FA 0%, #ffffff 100%)'}}>
+            <div className="max-w-2xl mx-auto px-4 py-8">
+                
+                {/* Header */}
+                <div className="mb-8">
+                    <div className="flex items-center justify-between mb-6">
+                        <h1 className="text-2xl font-bold" style={{color: '#311850'}}>
+                            Calculadora de Pacientes
+                        </h1>
+                        <button 
+                            onClick={() => setMostrarComoFunciona(!mostrarComoFunciona)}
+                            className="text-sm px-4 py-2 rounded-lg transition-colors"
+                            style={{backgroundColor: mostrarComoFunciona ? '#45256D' : '#F8F6FA', color: mostrarComoFunciona ? 'white' : '#45256D'}}
+                        >
+                            Como funciona?
+                        </button>
                     </div>
 
-                    <div className="mb-6">
-                        <label className="text-base font-medium mb-3 block" style={{color: '#311850'}}>
-                            👥 Pacientes fixos atuais
-                        </label>
-                        <div className="text-center mb-3">
-                            <span className="text-4xl font-bold" style={{color: '#45256D'}}>{pacientesAtuais}</span>
-                        </div>
-                        <input type="range" min="0" max="40" value={pacientesAtuais} onChange={(e) => setPacientesAtuais(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg cursor-pointer" style={{accentColor: '#45256D'}}/>
-                    </div>
-
-                    {pacientesAtuais > 0 && (
-                        <div className="mb-6 p-4 rounded-xl" style={{backgroundColor: '#F8F6FA', border: '2px solid #9C8FC2'}}>
-                            <div className="flex items-center justify-between mb-3">
-                                <label className="text-base font-medium" style={{color: '#311850'}}>
-                                    💵 Valor médio atual/sessão
-                                </label>
-                                <button onClick={() => setMostrarDicaValor(!mostrarDicaValor)} className="text-xl" style={{color: '#45256D'}}>ℹ️</button>
-                            </div>
-
-                            {mostrarDicaValor && (
-                                <div className="mb-3 p-3 rounded-lg text-sm" style={{backgroundColor: 'white', border: '1px solid #E8E3F0'}}>
-                                    <p className="font-semibold mb-2" style={{color: '#311850'}}>💡 Como calcular?</p>
-                                    <p className="mb-2" style={{color: '#7F6A93'}}>
-                                        Some todos os valores e divida pelo total de pacientes.
-                                    </p>
-                                    <div className="p-2 rounded text-xs" style={{backgroundColor: '#F8F6FA', color: '#311850'}}>
-                                        <p className="font-medium mb-1">Exemplo:</p>
-                                        <p>5 pac. × R$ 150 = R$ 750</p>
-                                        <p>3 pac. × R$ 120 = R$ 360</p>
-                                        <p>2 pac. × R$ 180 = R$ 360</p>
-                                        <p className="mt-1 font-semibold">Total: R$ 1.470 ÷ 10 = R$ 147</p>
-                                    </div>
-                                </div>
-                            )}
-
-                            <div className="text-center mb-3">
-                                <span className="text-4xl font-bold" style={{color: '#45256D'}}>R$ {valorMedioAtual}</span>
-                            </div>
-                            <input type="range" min="80" max="500" step="10" value={valorMedioAtual} onChange={(e) => setValorMedioAtual(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg cursor-pointer" style={{accentColor: '#45256D'}}/>
-
-                            <div className="mt-3 p-2 rounded-lg text-sm" style={{backgroundColor: 'white'}}>
-                                <p style={{color: '#7F6A93'}}>
-                                    💰 Faturamento atual: <span className="font-semibold" style={{color: '#311850'}}>
-                                        R$ {resultados.faturamentoAtual.toLocaleString('pt-BR')}/mês
-                                    </span>
-                                </p>
-                            </div>
+                    {mostrarComoFunciona && (
+                        <div className="mb-6 p-5 rounded-xl text-sm leading-relaxed" style={{backgroundColor: '#F8F6FA', border: '1px solid #E8E3F0'}}>
+                            <p className="font-semibold mb-3" style={{color: '#311850'}}>Como funciona esta calculadora</p>
+                            <p className="mb-3" style={{color: '#7F6A93'}}>
+                                Esta ferramenta ajuda você a planejar quantos pacientes fixos são necessários para atingir sua meta mensal de faturamento, considerando:
+                            </p>
+                            <ul className="space-y-2 ml-4" style={{color: '#7F6A93'}}>
+                                <li>• Sua meta financeira mensal recorrente</li>
+                                <li>• Quantos pacientes você já tem atualmente</li>
+                                <li>• O valor médio que você cobra hoje (se já atende)</li>
+                                <li>• A frequência dos atendimentos (semanal ou quinzenal)</li>
+                                <li>• O prazo que você tem para construir essa agenda</li>
+                                <li>• O valor que você deseja cobrar para atingir a meta</li>
+                            </ul>
+                            <p className="mt-3" style={{color: '#7F6A93'}}>
+                                Com base nesses dados, calculamos quantos novos pacientes você precisa captar e sugerimos estratégias para otimizar sua prática.
+                            </p>
                         </div>
                     )}
 
-                    <div className="mb-6">
-                        <label className="text-base font-medium mb-3 block" style={{color: '#311850'}}>
-                            📅 Prazo para atingir a meta
-                        </label>
-                        <div className="text-center mb-3">
-                            <span className="text-4xl font-bold" style={{color: '#45256D'}}>
-                                {meses} {meses === 1 ? 'mês' : 'meses'}
-                            </span>
-                        </div>
-                        <input type="range" min="1" max="24" value={meses} onChange={(e) => setMeses(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg cursor-pointer" style={{accentColor: '#45256D'}}/>
-                    </div>
-
-                    <div className="mb-6">
-                        <label className="text-base font-medium mb-3 block" style={{color: '#311850'}}>
-                            📈 Valor desejado/sessão
-                        </label>
-                        <div className="text-center mb-3">
-                            <span className="text-4xl font-bold" style={{color: '#45256D'}}>R$ {valorSessaoDesejado}</span>
-                        </div>
-                        <input type="range" min="80" max="500" step="10" value={valorSessaoDesejado} onChange={(e) => setValorSessaoDesejado(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg cursor-pointer" style={{accentColor: '#45256D'}}/>
-                    </div>
-
-                    <div className="border-t-2 pt-6" style={{borderColor: '#F8F6FA'}}>
-                        <div className="text-center space-y-4">
-                            {resultados.pacientesFaltando > 0 ? (
-                                <>
-                                    <p className="text-base" style={{color: '#7F6A93'}}>
-                                        Para faturar R$ {metaMensal.toLocaleString('pt-BR')}/mês, você precisa de
-                                    </p>
-
-                                    <div className="rounded-xl p-6 text-white shadow-lg" style={{background: 'linear-gradient(135deg, #45256D 0%, #311850 100%)'}}>
-                                        <p className="text-5xl font-bold mb-1">{resultados.pacientesNecessarios}</p>
-                                        <p className="text-lg">pacientes fixos no total</p>
-                                    </div>
-
-                                    <div className="rounded-xl p-6 shadow-lg text-white" style={{background: 'linear-gradient(135deg, #9C8FC2 0%, #7F6A93 100%)'}}>
-                                        <p className="text-base mb-2 opacity-90">Você já tem {pacientesAtuais}, então precisa captar</p>
-                                        <p className="text-5xl font-bold mb-1">{resultados.pacientesFaltando}</p>
-                                        <p className="text-lg">novos pacientes</p>
-                                    </div>
-
-                                    <div className="rounded-lg p-4 text-sm" style={{backgroundColor: '#F8F6FA', border: '2px solid #9C8FC2'}}>
-                                        <p className="font-semibold mb-2" style={{color: '#311850'}}>
-                                            📅 Ritmo de captação:
-                                        </p>
-                                        <div className="grid grid-cols-2 gap-3">
-                                            <div>
-                                                <p className="text-3xl font-bold" style={{color: '#45256D'}}>{resultados.pacientesPorMes}</p>
-                                                <p className="text-xs" style={{color: '#7F6A93'}}>pacientes/mês</p>
-                                            </div>
-                                            <div>
-                                                <p className="text-3xl font-bold" style={{color: '#45256D'}}>{resultados.diasPorPaciente}</p>
-                                                <p className="text-xs" style={{color: '#7F6A93'}}>dias/paciente</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </>
-                            ) : (
-                                <div className="rounded-xl p-6 text-white shadow-lg" style={{background: 'linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)'}}>
-                                    <p className="text-2xl mb-2">🎉 Parabéns!</p>
-                                    <p className="text-base">Você já atingiu sua meta!</p>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                {sugestoes.length > 0 && resultados.pacientesFaltando > 0 && (
-                    <div className="space-y-3">
-                        <h2 className="text-xl font-bold mb-3" style={{color: '#311850'}}>
-                            💡 Estratégias para otimizar
-                        </h2>
-                        <p className="text-xs mb-4" style={{color: '#7F6A93'}}>
-                            Ordenadas do menor esforço para o maior impacto
-                        </p>
-                        {sugestoes.map((sugestao, index) => (
-                            <div key={index} className="rounded-xl p-4 text-sm" style={{
-                                backgroundColor: sugestao.tipo === 'alerta' ? '#FEF3E2' : sugestao.tipo === 'dica' ? '#E8F5E8' : sugestao.tipo === 'motivacao' ? '#E3F2FD' : '#F8F6FA',
-                                border: `2px solid ${sugestao.tipo === 'alerta' ? '#F59E0B' : sugestao.tipo === 'dica' ? '#4CAF50' : sugestao.tipo === 'motivacao' ? '#2196F3' : '#9C8FC2'}`
-                            }}>
-                                <p className="text-xs font-semibold mb-1 uppercase" style={{color: sugestao.tipo === 'alerta' ? '#92400E' : sugestao.tipo === 'dica' ? '#1B5E20' : sugestao.tipo === 'motivacao' ? '#0D47A1' : '#45256D'}}>
-                                    {sugestao.impacto}
-                                </p>
-                                <p className="leading-snug" style={{color: sugestao.tipo === 'alerta' ? '#B45309' : '#311850'}}>
-                                    {sugestao.texto}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                <div className="mt-6 bg-white rounded-xl p-4 text-xs" style={{color: '#7F6A93'}}>
-                    <p className="font-medium mb-2" style={{color: '#311850'}}>📋 Considerações:</p>
-                    <ul className="space-y-1 ml-4">
-                        <li>• Cálculos assumem frequência semanal</li>
-                        <li>• Considere 10-15% de faltas</li>
-                        <li>• Agenda saudável: 15-20 pacientes</li>
-                        <li>• Acima de 25: risco de burnout</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-</script>
-</body>
-</html><!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora para Psicólogas</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-</head>
-<body>
-<div id="root"></div>
-<script type="text/babel">
-const {useState} = React;
-
-function App() {
-    const [metaMensal, setMetaMensal] = useState(10000);
-    const [meses, setMeses] = useState(6);
-    const [valorSessaoDesejado, setValorSessaoDesejado] = useState(150);
-    const [pacientesAtuais, setPacientesAtuais] = useState(0);
-    const [valorMedioAtual, setValorMedioAtual] = useState(150);
-    const [mostrarDicaValor, setMostrarDicaValor] = useState(false);
-
-    const calcularResultados = () => {
-        const receitaPorPacienteMensal = valorSessaoDesejado * 4;
-        const pacientesNecessarios = Math.ceil(metaMensal / receitaPorPacienteMensal);
-        const faturamentoAtual = pacientesAtuais * valorMedioAtual * 4;
-        const pacientesFaltando = Math.max(0, pacientesNecessarios - pacientesAtuais);
-        const pacientesPorMes = meses > 0 ? (pacientesFaltando / meses).toFixed(1) : 0;
-        const diasPorPaciente = meses > 0 && pacientesFaltando > 0 ? Math.round((meses * 30) / pacientesFaltando) : 0;
-        const sessoesPorMes = pacientesNecessarios * 4;
-        const horasPorSemana = pacientesNecessarios * 1;
-        const faturamentoTotal = metaMensal * meses;
-        const totalSessoes = sessoesPorMes * meses;
-        const faturamentoFaltando = metaMensal - faturamentoAtual;
-
-        return {pacientesNecessarios, pacientesFaltando, pacientesPorMes: parseFloat(pacientesPorMes), diasPorPaciente, faturamentoAtual, faturamentoFaltando, sessoesPorMes, horasPorSemana, faturamentoTotal, totalSessoes, receitaPorPacienteMensal};
-    };
-
-    const resultados = calcularResultados();
-
-    const getSugestoes = () => {
-        const sugestoes = [];
-        
-        if (valorSessaoDesejado < 200 && resultados.pacientesFaltando > 5) {
-            const novoValor = Math.ceil(valorSessaoDesejado * 1.3 / 10) * 10;
-            const novosPacientesNecessarios = Math.ceil(metaMensal / (novoValor * 4));
-            const novoPacientesFaltando = Math.max(0, novosPacientesNecessarios - pacientesAtuais);
-            const reducao = resultados.pacientesFaltando - novoPacientesFaltando;
-            
-            sugestoes.push({tipo: 'dica', impacto: 'Alto impacto, baixo esforço', texto: `Aumentando seus honorários para R$ ${novoValor}, você precisaria captar apenas ${novoPacientesFaltando} pacientes (${reducao} a menos!), mantendo os mesmos R$ ${metaMensal.toLocaleString('pt-BR')}/mês.`});
-        }
-        
-        if (resultados.pacientesFaltando > 8) {
-            const grupoValor = Math.ceil(valorSessaoDesejado * 0.6 / 10) * 10;
-            const receitaGrupoMensal = grupoValor * 8 * 4;
-            const pacientesEquiv = Math.ceil(receitaGrupoMensal / (valorSessaoDesejado * 4));
-            const novosFaltando = Math.max(0, resultados.pacientesFaltando - pacientesEquiv);
-            
-            sugestoes.push({tipo: 'ideia', impacto: 'Alto impacto, médio esforço', texto: `Criando 1 grupo terapêutico semanal com 8 pessoas a R$ ${grupoValor}/sessão, você faturaria R$ ${receitaGrupoMensal.toLocaleString('pt-BR')}/mês. Isso reduz sua necessidade de ${resultados.pacientesFaltando} para ${novosFaltando} pacientes individuais.`});
-        }
-        
-        if (resultados.pacientesFaltando > 5) {
-            const workshopValor = Math.ceil(valorSessaoDesejado * 1.5 / 10) * 10;
-            const receitaWorkshop = workshopValor * 15;
-            const pacientesEquiv = Math.ceil(receitaWorkshop / (valorSessaoDesejado * 4));
-            
-            sugestoes.push({tipo: 'ideia', impacto: 'Médio impacto, médio esforço', texto: `Um workshop mensal com 15 pessoas a R$ ${workshopValor} geraria R$ ${receitaWorkshop.toLocaleString('pt-BR')}/mês. Isso equivale a ${pacientesEquiv} pacientes fixos.`});
-        }
-        
-        if (resultados.pacientesFaltando > 6 || metaMensal > 15000) {
-            const produtoValor = 97;
-            const vendasMensais = Math.ceil(Math.max(resultados.faturamentoFaltando, 0) * 0.25 / produtoValor);
-            const receitaProduto = vendasMensais * produtoValor;
-            const pacientesLib = Math.ceil(receitaProduto / (valorSessaoDesejado * 4));
-            
-            sugestoes.push({tipo: 'ideia', impacto: 'Médio impacto, alto esforço inicial', texto: `Criando um produto digital a R$ ${produtoValor} e vendendo ${vendasMensais} unidades/mês, você geraria R$ ${receitaProduto.toLocaleString('pt-BR')}/mês passivamente, reduzindo ${pacientesLib} pacientes da meta.`});
-        }
-        
-        if (resultados.pacientesNecessarios > 25) {
-            sugestoes.push({tipo: 'alerta', impacto: 'Atenção necessária', texto: `${resultados.pacientesNecessarios} pacientes fixos é insustentável. Você PRECISA diversificar sua renda para preservar sua saúde mental.`});
-        } else if (resultados.pacientesNecessarios > 20) {
-            sugestoes.push({tipo: 'alerta', impacto: 'Atenção necessária', texto: `${resultados.pacientesNecessarios} pacientes fixos é uma agenda muito cheia. Considere as estratégias acima.`});
-        }
-        
-        if (resultados.horasPorSemana > 30) {
-            sugestoes.push({tipo: 'alerta', impacto: 'Risco de burnout', texto: `${resultados.horasPorSemana}h/semana só em atendimento deixa pouco espaço para supervisão, estudos e autocuidado.`});
-        }
-        
-        if (resultados.pacientesFaltando > 0 && resultados.pacientesFaltando <= 3) {
-            sugestoes.push({tipo: 'motivacao', impacto: 'Você está quase lá!', texto: `Faltam apenas ${resultados.pacientesFaltando} paciente${resultados.pacientesFaltando > 1 ? 's' : ''} para atingir sua meta!`});
-        }
-        
-        return sugestoes;
-    };
-
-    const sugestoes = getSugestoes();
-
-    return (
-        <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F8F6FA 0%, #E8E3F0 100%)'}}>
-            <div className="max-w-4xl mx-auto">
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{color: '#311850'}}>
-                        Quantos pacientes você precisa?
-                    </h1>
-                    <p className="text-lg" style={{color: '#7F6A93'}}>
-                        Calcule quantos pacientes fixos são necessários para atingir sua meta mensal
+                    <p className="text-sm" style={{color: '#7F6A93'}}>
+                        Planeje sua agenda e descubra quantos pacientes você precisa para atingir suas metas financeiras
                     </p>
                 </div>
 
-                <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12 mb-8">
-                    <div className="mb-10">
-                        <label className="text-lg font-medium mb-4 block" style={{color: '#311850'}}>
-                            💰 Quero faturar por mês (recorrente)
-                        </label>
-                        <div className="text-center mb-4">
-                            <span className="text-5xl font-bold" style={{color: '#45256D'}}>
+                {/* Formulário */}
+                <div className="bg-white rounded-xl shadow-sm p-6 mb-6" style={{border: '1px solid #E8E3F0'}}>
+                    
+                    {/* Meta Mensal */}
+                    <div className="mb-6">
+                        <div className="flex items-center justify-between mb-2">
+                            <label className="text-sm font-medium" style={{color: '#311850'}}>
+                                Meta de faturamento mensal
+                            </label>
+                            <span className="text-xs px-2 py-1 rounded" style={{backgroundColor: '#F8F6FA', color: '#7F6A93'}}>
+                                Recorrente
+                            </span>
+                        </div>
+                        <div className="text-center mb-3">
+                            <span className="text-3xl font-bold" style={{color: '#45256D'}}>
                                 R$ {metaMensal.toLocaleString('pt-BR')}
                             </span>
-                            <p className="text-sm mt-2" style={{color: '#7F6A93'}}>por mês, todos os meses</p>
                         </div>
-                        <input type="range" min="2000" max="50000" step="500" value={metaMensal} onChange={(e) => setMetaMensal(Number(e.target.value))} className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer" style={{accentColor: '#45256D'}}/>
-                        <div className="flex justify-between text-sm mt-2" style={{color: '#9C8FC2'}}>
+                        <input type="range" min="2000" max="50000" step="500" value={metaMensal} onChange={(e) => setMetaMensal(Number(e.target.value))} className="custom-range w-full h-1 bg-gray-200 rounded-lg cursor-pointer"/>
+                        <div className="flex justify-between text-xs mt-1" style={{color: '#9C8FC2'}}>
                             <span>R$ 2.000</span>
                             <span>R$ 50.000</span>
                         </div>
                     </div>
 
-                    <div className="mb-10">
-                        <label className="text-lg font-medium mb-4 block" style={{color: '#311850'}}>
-                            👥 Quantos pacientes fixos você já tem?
+                    {/* Pacientes Atuais */}
+                    <div className="mb-6">
+                        <label className="text-sm font-medium mb-2 block" style={{color: '#311850'}}>
+                            Pacientes fixos que você já tem
                         </label>
-                        <div className="text-center mb-4">
-                            <span className="text-5xl font-bold" style={{color: '#45256D'}}>{pacientesAtuais}</span>
-                            <p className="text-sm mt-2" style={{color: '#7F6A93'}}>
-                                {pacientesAtuais === 0 ? 'começando do zero' : pacientesAtuais === 1 ? 'paciente atual' : 'pacientes atuais'}
+                        <div className="text-center mb-3">
+                            <span className="text-3xl font-bold" style={{color: '#45256D'}}>{pacientesAtuais}</span>
+                            <p className="text-xs mt-1" style={{color: '#7F6A93'}}>
+                                {pacientesAtuais === 0 ? 'Começando do zero' : `${pacientesAtuais} na agenda`}
                             </p>
                         </div>
-                        <input type="range" min="0" max="40" value={pacientesAtuais} onChange={(e) => setPacientesAtuais(Number(e.target.value))} className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer" style={{accentColor: '#45256D'}}/>
-                        <div className="flex justify-between text-sm mt-2" style={{color: '#9C8FC2'}}>
-                            <span>0</span>
-                            <span>40</span>
-                        </div>
+                        <input type="range" min="0" max="40" value={pacientesAtuais} onChange={(e) => setPacientesAtuais(Number(e.target.value))} className="custom-range w-full h-1 bg-gray-200 rounded-lg cursor-pointer"/>
                     </div>
 
+                    {/* Valor Médio Atual */}
                     {pacientesAtuais > 0 && (
-                        <div className="mb-10 p-6 rounded-2xl" style={{backgroundColor: '#F8F6FA', border: '2px solid #9C8FC2'}}>
-                            <div className="flex items-center justify-between mb-4">
-                                <label className="text-lg font-medium" style={{color: '#311850'}}>
-                                    💵 Valor médio atual por sessão
+                        <div className="mb-6 p-4 rounded-lg" style={{backgroundColor: '#F8F6FA'}}>
+                            <div className="flex items-center justify-between mb-2">
+                                <label className="text-sm font-medium" style={{color: '#311850'}}>
+                                    Valor médio atual por sessão
                                 </label>
-                                <button onClick={() => setMostrarDicaValor(!mostrarDicaValor)} className="text-2xl hover:scale-110 transition-transform" style={{color: '#45256D'}}>ℹ️</button>
+                                <button onClick={() => setMostrarDicaValor(!mostrarDicaValor)} className="text-lg" style={{color: '#45256D'}}>
+                                    {mostrarDicaValor ? '✕' : 'ⓘ'}
+                                </button>
                             </div>
 
                             {mostrarDicaValor && (
-                                <div className="mb-4 p-4 rounded-lg" style={{backgroundColor: 'white', border: '1px solid #E8E3F0'}}>
-                                    <p className="font-semibold mb-2" style={{color: '#311850'}}>💡 Como calcular seu valor médio atual?</p>
-                                    <p className="text-sm mb-3" style={{color: '#7F6A93'}}>
-                                        Some o valor de todas as sessões dos seus pacientes atuais e divida pelo número de pacientes.
+                                <div className="mb-3 p-3 rounded-lg text-xs" style={{backgroundColor: 'white', border: '1px solid #E8E3F0'}}>
+                                    <p className="font-semibold mb-2" style={{color: '#311850'}}>Como calcular o valor médio?</p>
+                                    <p className="mb-2" style={{color: '#7F6A93'}}>
+                                        Some todos os valores das sessões e divida pelo número de pacientes.
                                     </p>
-                                    <div className="text-sm p-3 rounded" style={{backgroundColor: '#F8F6FA', color: '#311850'}}>
-                                        <p className="font-medium mb-2">Exemplo:</p>
-                                        <p>• 5 pacientes pagam R$ 150</p>
-                                        <p>• 3 pacientes pagam R$ 120</p>
-                                        <p>• 2 pacientes pagam R$ 180</p>
-                                        <p className="mt-2 font-semibold">Cálculo: (5×150 + 3×120 + 2×180) ÷ 10 = R$ 150/sessão</p>
+                                    <div className="p-2 rounded text-xs" style={{backgroundColor: '#F8F6FA', color: '#311850'}}>
+                                        <p className="font-medium mb-1">Exemplo:</p>
+                                        <p>5 pacientes × R$ 150 = R$ 750</p>
+                                        <p>3 pacientes × R$ 120 = R$ 360</p>
+                                        <p>2 pacientes × R$ 180 = R$ 360</p>
+                                        <p className="mt-1 font-semibold">R$ 1.470 ÷ 10 pacientes = R$ 147 por sessão</p>
                                     </div>
                                 </div>
                             )}
 
-                            <div className="text-center mb-4">
-                                <span className="text-5xl font-bold" style={{color: '#45256D'}}>R$ {valorMedioAtual}</span>
+                            <div className="text-center mb-3">
+                                <span className="text-3xl font-bold" style={{color: '#45256D'}}>R$ {valorMedioAtual}</span>
                             </div>
-                            <input type="range" min="80" max="500" step="10" value={valorMedioAtual} onChange={(e) => setValorMedioAtual(Number(e.target.value))} className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer" style={{accentColor: '#45256D'}}/>
-                            <div className="flex justify-between text-sm mt-2" style={{color: '#9C8FC2'}}>
-                                <span>R$ 80</span>
-                                <span>R$ 500</span>
-                            </div>
+                            <input type="range" min="80" max="500" step="10" value={valorMedioAtual} onChange={(e) => setValorMedioAtual(Number(e.target.value))} className="custom-range w-full h-1 bg-gray-200 rounded-lg cursor-pointer"/>
 
-                            <div className="mt-4 p-3 rounded-lg" style={{backgroundColor: 'white'}}>
-                                <p className="text-sm" style={{color: '#7F6A93'}}>
-                                    💰 Faturamento atual: <span className="font-semibold text-lg" style={{color: '#311850'}}>
-                                        R$ {resultados.faturamentoAtual.toLocaleString('pt-BR')}/mês
-                                    </span>
-                                </p>
+                            <div className="mt-3 p-2 rounded text-xs text-center" style={{backgroundColor: 'white'}}>
+                                <span style={{color: '#7F6A93'}}>Faturamento atual: </span>
+                                <span className="font-semibold" style={{color: '#311850'}}>
+                                    R$ {resultados.faturamentoAtual.toLocaleString('pt-BR')}/mês
+                                </span>
                             </div>
                         </div>
                     )}
 
-                    <div className="mb-10">
-                        <label className="text-lg font-medium mb-4 block" style={{color: '#311850'}}>
-                            📅 Prazo para atingir a meta
+                    {/* Frequência */}
+                    <div className="mb-6">
+                        <label className="text-sm font-medium mb-2 block" style={{color: '#311850'}}>
+                            Frequência dos atendimentos
                         </label>
-                        <div className="text-center mb-4">
-                            <span className="text-5xl font-bold" style={{color: '#45256D'}}>
+                        <div className="grid grid-cols-2 gap-3">
+                            <button
+                                onClick={() => setFrequencia('semanal')}
+                                className="p-3 rounded-lg text-sm font-medium transition-all"
+                                style={{
+                                    backgroundColor: frequencia === 'semanal' ? '#45256D' : '#F8F6FA',
+                                    color: frequencia === 'semanal' ? 'white' : '#7F6A93',
+                                    border: `2px solid ${frequencia === 'semanal' ? '#45256D' : '#E8E3F0'}`
+                                }}
+                            >
+                                Semanal
+                                <div className="text-xs mt-1 opacity-75">4 sessões/mês</div>
+                            </button>
+                            <button
+                                onClick={() => setFrequencia('quinzenal')}
+                                className="p-3 rounded-lg text-sm font-medium transition-all"
+                                style={{
+                                    backgroundColor: frequencia === 'quinzenal' ? '#45256D' : '#F8F6FA',
+                                    color: frequencia === 'quinzenal' ? 'white' : '#7F6A93',
+                                    border: `2px solid ${frequencia === 'quinzenal' ? '#45256D' : '#E8E3F0'}`
+                                }}
+                            >
+                                Quinzenal
+                                <div className="text-xs mt-1 opacity-75">2 sessões/mês</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Prazo */}
+                    <div className="mb-6">
+                        <label className="text-sm font-medium mb-2 block" style={{color: '#311850'}}>
+                            Prazo para construir a agenda
+                        </label>
+                        <div className="text-center mb-3">
+                            <span className="text-3xl font-bold" style={{color: '#45256D'}}>
                                 {meses} {meses === 1 ? 'mês' : 'meses'}
                             </span>
                         </div>
-                        <input type="range" min="1" max="24" value={meses} onChange={(e) => setMeses(Number(e.target.value))} className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer" style={{accentColor: '#45256D'}}/>
-                        <div className="flex justify-between text-sm mt-2" style={{color: '#9C8FC2'}}>
-                            <span>1 mês</span>
-                            <span>24 meses</span>
-                        </div>
+                        <input type="range" min="1" max="24" value={meses} onChange={(e) => setMeses(Number(e.target.value))} className="custom-range w-full h-1 bg-gray-200 rounded-lg cursor-pointer"/>
                     </div>
 
-                    <div className="mb-10">
-                        <label className="text-lg font-medium mb-4 block" style={{color: '#311850'}}>
-                            📈 Valor desejado por sessão
+                    {/* Valor Desejado */}
+                    <div className="mb-6">
+                        <label className="text-sm font-medium mb-2 block" style={{color: '#311850'}}>
+                            Valor desejado por sessão (para atingir a meta)
                         </label>
-                        <div className="text-center mb-4">
-                            <span className="text-5xl font-bold" style={{color: '#45256D'}}>R$ {valorSessaoDesejado}</span>
+                        <div className="text-center mb-3">
+                            <span className="text-3xl font-bold" style={{color: '#45256D'}}>R$ {valorSessaoDesejado}</span>
                         </div>
-                        <input type="range" min="80" max="500" step="10" value={valorSessaoDesejado} onChange={(e) => setValorSessaoDesejado(Number(e.target.value))} className="w-full h-3 bg-gray-200 rounded-lg cursor-pointer" style={{accentColor: '#45256D'}}/>
-                        <div className="flex justify-between text-sm mt-2" style={{color: '#9C8FC2'}}>
-                            <span>R$ 80</span>
-                            <span>R$ 500</span>
-                        </div>
+                        <input type="range" min="80" max="500" step="10" value={valorSessaoDesejado} onChange={(e) => setValorSessaoDesejado(Number(e.target.value))} className="custom-range w-full h-1 bg-gray-200 rounded-lg cursor-pointer"/>
                     </div>
 
-                    <div className="border-t-2 pt-8" style={{borderColor: '#F8F6FA'}}>
-                        <div className="text-center space-y-6">
+                    {/* Resultados */}
+                    <div className="border-t pt-6" style={{borderColor: '#E8E3F0'}}>
+                        <div className="space-y-4">
                             {resultados.pacientesFaltando > 0 ? (
                                 <>
-                                    <p className="text-xl" style={{color: '#7F6A93'}}>
-                                        Para faturar R$ {metaMensal.toLocaleString('pt-BR')}/mês, você precisa de
-                                    </p>
-
-                                    <div className="rounded-2xl p-8 text-white shadow-lg" style={{background: 'linear-gradient(135deg, #45256D 0%, #311850 100%)'}}>
-                                        <p className="text-7xl font-bold mb-2">{resultados.pacientesNecessarios}</p>
-                                        <p className="text-2xl font-medium">pacientes fixos no total</p>
-                                    </div>
-
-                                    <div className="rounded-2xl p-8 shadow-lg text-white" style={{background: 'linear-gradient(135deg, #9C8FC2 0%, #7F6A93 100%)'}}>
-                                        <p className="text-xl mb-3 opacity-90">Você já tem {pacientesAtuais}, então precisa captar</p>
-                                        <p className="text-6xl font-bold mb-2">{resultados.pacientesFaltando}</p>
-                                        <p className="text-2xl font-medium">novos pacientes</p>
-                                    </div>
-
-                                    <div className="rounded-xl p-6" style={{backgroundColor: '#F8F6FA', border: '2px solid #9C8FC2'}}>
-                                        <p className="text-lg font-semibold mb-3" style={{color: '#311850'}}>
-                                            📅 Ritmo de captação necessário:
+                                    <div className="text-center mb-4">
+                                        <p className="text-sm mb-3" style={{color: '#7F6A93'}}>
+                                            Para faturar R$ {metaMensal.toLocaleString('pt-BR')} mensais, você precisa de:
                                         </p>
-                                        <div className="grid md:grid-cols-2 gap-4">
+                                    </div>
+
+                                    <div className="rounded-lg p-5 text-center" style={{background: 'linear-gradient(135deg, #45256D 0%, #311850 100%)', color: 'white'}}>
+                                        <p className="text-4xl font-bold mb-1">{resultados.pacientesNecessarios}</p>
+                                        <p className="text-sm opacity-90">pacientes fixos no total</p>
+                                    </div>
+
+                                    <div className="rounded-lg p-5 text-center" style={{background: 'linear-gradient(135deg, #9C8FC2 0%, #7F6A93 100%)', color: 'white'}}>
+                                        <p className="text-xs mb-2 opacity-90">Você já tem {pacientesAtuais}, precisa captar</p>
+                                        <p className="text-4xl font-bold mb-1">{resultados.pacientesFaltando}</p>
+                                        <p className="text-sm opacity-90">novos pacientes</p>
+                                    </div>
+
+                                    <div className="rounded-lg p-4" style={{backgroundColor: '#F8F6FA', border: '1px solid #E8E3F0'}}>
+                                        <p className="text-xs font-semibold mb-3 text-center" style={{color: '#311850'}}>
+                                            Ritmo de captação necessário
+                                        </p>
+                                        <div className="grid grid-cols-2 gap-3 text-center">
                                             <div>
-                                                <p className="text-4xl font-bold" style={{color: '#45256D'}}>{resultados.pacientesPorMes}</p>
-                                                <p className="text-sm" style={{color: '#7F6A93'}}>pacientes por mês</p>
+                                                <p className="text-2xl font-bold" style={{color: '#45256D'}}>{resultados.pacientesPorMes}</p>
+                                                <p className="text-xs" style={{color: '#7F6A93'}}>pacientes/mês</p>
                                             </div>
                                             <div>
-                                                <p className="text-4xl font-bold" style={{color: '#45256D'}}>{resultados.diasPorPaciente}</p>
-                                                <p className="text-sm" style={{color: '#7F6A93'}}>dias para cada novo paciente</p>
+                                                <p className="text-2xl font-bold" style={{color: '#45256D'}}>{resultados.diasPorPaciente}</p>
+                                                <p className="text-xs" style={{color: '#7F6A93'}}>dias/paciente</p>
                                             </div>
                                         </div>
                                     </div>
+
+                                    {/* Botão Explicação */}
+                                    <button
+                                        onClick={() => setMostrarCalculo(!mostrarCalculo)}
+                                        className="w-full text-xs py-2 rounded-lg transition-colors"
+                                        style={{backgroundColor: '#F8F6FA', color: '#45256D'}}
+                                    >
+                                        {mostrarCalculo ? 'Ocultar' : 'Ver'} como calculamos
+                                    </button>
+
+                                    {mostrarCalculo && (
+                                        <div className="p-4 rounded-lg text-xs leading-relaxed" style={{backgroundColor: '#F8F6FA', border: '1px solid #E8E3F0'}}>
+                                            <p className="font-semibold mb-2" style={{color: '#311850'}}>Como calculamos:</p>
+                                            <div className="space-y-2" style={{color: '#7F6A93'}}>
+                                                <p><strong>1.</strong> Cada paciente atende {frequencia === 'semanal' ? '1x por semana' : '1x a cada 15 dias'} = {sessoesPorMes} sessões/mês</p>
+                                                <p><strong>2.</strong> Receita por paciente: R$ {valorSessaoDesejado} × {sessoesPorMes} = R$ {resultados.receitaPorPacienteMensal}</p>
+                                                <p><strong>3.</strong> Pacientes necessários: R$ {metaMensal.toLocaleString('pt-BR')} ÷ R$ {resultados.receitaPorPacienteMensal} = {resultados.pacientesNecessarios}</p>
+                                                <p><strong>4.</strong> Você já tem {pacientesAtuais}, faltam {resultados.pacientesFaltando}</p>
+                                                <p><strong>5.</strong> Em {meses} meses: {resultados.pacientesFaltando} ÷ {meses} = {resultados.pacientesPorMes} pacientes/mês</p>
+                                            </div>
+                                        </div>
+                                    )}
                                 </>
                             ) : (
-                                <div className="rounded-2xl p-8 text-white shadow-lg" style={{background: 'linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)'}}>
-                                    <p className="text-3xl mb-3">🎉 Parabéns!</p>
-                                    <p className="text-xl">Você já atingiu sua meta!</p>
+                                <div className="rounded-lg p-5 text-center" style={{background: 'linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)', color: 'white'}}>
+                                    <p className="text-xl mb-2 font-semibold">Parabéns!</p>
+                                    <p className="text-sm">Você já atingiu sua meta financeira.</p>
                                 </div>
                             )}
                         </div>
                     </div>
                 </div>
 
+                {/* Sugestões */}
                 {sugestoes.length > 0 && resultados.pacientesFaltando > 0 && (
-                    <div className="space-y-4">
-                        <h2 className="text-2xl font-bold mb-4" style={{color: '#311850'}}>
-                            💡 Estratégias para otimizar sua prática
+                    <div className="mb-6">
+                        <h2 className="text-lg font-bold mb-3" style={{color: '#311850'}}>
+                            Estratégias de otimização
                         </h2>
-                        <p className="text-sm mb-6" style={{color: '#7F6A93'}}>
-                            Ordenadas do menor esforço para o maior impacto financeiro
+                        <p className="text-xs mb-4" style={{color: '#7F6A93'}}>
+                            Do menor esforço para o maior impacto financeiro
                         </p>
-                        {sugestoes.map((sugestao, index) => (
-                            <div key={index} className="rounded-2xl p-6" style={{
-                                backgroundColor: sugestao.tipo === 'alerta' ? '#FEF3E2' : sugestao.tipo === 'dica' ? '#E8F5E8' : sugestao.tipo === 'motivacao' ? '#E3F2FD' : '#F8F6FA',
-                                border: `2px solid ${sugestao.tipo === 'alerta' ? '#F59E0B' : sugestao.tipo === 'dica' ? '#4CAF50' : sugestao.tipo === 'motivacao' ? '#2196F3' : '#9C8FC2'}`
-                            }}>
-                                <p className="text-xs font-semibold mb-2 uppercase tracking-wide" style={{color: sugestao.tipo === 'alerta' ? '#92400E' : sugestao.tipo === 'dica' ? '#1B5E20' : sugestao.tipo === 'motivacao' ? '#0D47A1' : '#45256D'}}>
-                                    {sugestao.impacto}
-                                </p>
-                                <p className="leading-relaxed" style={{color: sugestao.tipo === 'alerta' ? '#B45309' : '#311850'}}>
-                                    {sugestao.texto}
-                                </p>
-                            </div>
-                        ))}
+                        <div className="space-y-3">
+                            {sugestoes.map((sugestao, index) => (
+                                <div key={index} className="rounded-lg p-4 text-sm" style={{
+                                    backgroundColor: sugestao.tipo === 'alerta' ? '#FEF3E2' : sugestao.tipo === 'dica' ? '#E8F5E8' : sugestao.tipo === 'motivacao' ? '#E3F2FD' : '#F8F6FA',
+                                    border: `1px solid ${sugestao.tipo === 'alerta' ? '#F59E0B' : sugestao.tipo === 'dica' ? '#4CAF50' : sugestao.tipo === 'motivacao' ? '#2196F3' : '#E8E3F0'}`
+                                }}>
+                                    <p className="text-xs font-semibold mb-1 uppercase" style={{color: sugestao.tipo === 'alerta' ? '#92400E' : sugestao.tipo === 'dica' ? '#1B5E20' : sugestao.tipo === 'motivacao' ? '#0D47A1' : '#45256D'}}>
+                                        {sugestao.impacto}
+                                    </p>
+                                    <p className="leading-relaxed" style={{color: sugestao.tipo === 'alerta' ? '#B45309' : '#311850'}}>
+                                        {sugestao.texto}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 )}
 
-                <div className="mt-12 bg-white rounded-2xl p-6 text-sm" style={{color: '#7F6A93'}}>
-                    <p className="font-medium mb-2" style={{color: '#311850'}}>📋 Considerações importantes:</p>
-                    <ul className="space-y-1 ml-4">
-                        <li>• Cálculos assumem pacientes com frequência semanal</li>
-                        <li>• Considere 10-15% de faltas/remarcações</li>
-                        <li>• Agenda saudável: 15-20 pacientes fixos</li>
-                        <li>• Acima de 25 pacientes: risco de burnout</li>
-                    </ul>
-                </div>
+                {/* CTA Diagnóstico */}
+                <div className="bg-white rounded-xl shadow-sm p-6 mb-6" style={{border: '1px solid #E8E3F0'}}>
+                    <h3 className="text-lg font-bold mb-2" style={{color: '#311850'}}>
+                        Quer um diagnóstico personalizado?
+                    </h3>
+                    <p className="text-sm mb-4" style={{color: '#7F6A93'}}>
+                        Receba uma análise detalhada da sua situação e recomendações específicas para o seu caso.
+                    </p>
+                    
+                    {!mostrarFormulario ? (
+                        <button
+                            onClick={() => setMostrarFormulario(true)}
+                            className="w-full py-3 rounded-lg text-sm font-medium text-white transition-colors"
+                            style={{backgroundColor: '#45256D'}}
+                        >
+                            Solicitar diagnóstico gratuito
+                        </button>
+                    ) : (
+                        <form onSubmit={handleSubmit} className="space-y-3">
+                            <input
+                                type="text"
+                                placeholder="Seu nome"
+                                value={nome}
+                                onChange={(e) => setNome(e.target.value)}
+                                required
+                                className="w-full p-3 rounded-lg text-sm"
+                                style={{border: '1px solid #E8E3F0', outline: 'none'}}
+                            />
+                            <input
+                                type="email"
+                                placeholder="Seu e-mail"
+                                value={email}
+onChange={(e) => setEmail(e.target.value)}
+required
+className="w-full p-3 rounded-lg text-sm"
+style={{border: '1px solid #E8E3F0', outline: 'none'}}
+/>
+<input
+type="tel"
+placeholder="Seu telefone (opcional)"
+value={telefone}
+onChange={(e) => setTelefone(e.target.value)}
+className="w-full p-3 rounded-lg text-sm"
+style={{border: '1px solid #E8E3F0', outline: 'none'}}
+/>
+<button
+type="submit"
+className="w-full py-3 rounded-lg text-sm font-medium text-white"
+style={{backgroundColor: '#45256D'}}
+>
+Enviar solicitação
+</button>
+</form>
+)}
+</div>
+            {/* Footer */}
+            <div className="text-center text-xs" style={{color: '#9C8FC2'}}>
+                <p className="mb-2">Calculadora de Pacientes • 2024</p>
+                <p>Todos os cálculos são estimativas. Considere 10-15% de faltas na prática real.</p>
             </div>
         </div>
-    );
+    </div>
+);
 }
-
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 </script>
 </body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=0.75, maximum-scale=1.0, user-scalable=yes" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Pastebin.com - Not Found (#404)</title>
-</head>
-<body>
-
-
-<h1>Not Found (#404)</h1>
-<p>This page is no longer available. It has either expired, been removed by its creator, or removed by one of the Pastebin staff.</p>
-
-</body>
 </html>
+````
