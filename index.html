@@ -1,2 +1,517 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Calculadora da Realidade Financeira Desejada</title><script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/react@18/umd/react.production.min.js"></script><script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script><script src="https://unpkg.com/@babel/standalone/babel.min.js"></script></head><body><div id="root"></div>
-<script type="text/babel">const{useState}=React;function App(){const[m,sm]=useState(10000),[mo,smo]=useState(6),[vd,svd]=useState(150),[ps,sps]=useState(0),[vs,svs]=useState(150),[pq,spq]=useState(0),[vq,svq]=useState(150);const fs=ps*vs*4,fq=pq*vq*2,fa=fs+fq,pa=ps+pq,ff=Math.max(0,m-fa),pn=Math.ceil(ff/(vd*4));return <div style={{minHeight:"100vh",background:"linear-gradient(180deg,#F8F6FA,#fff)",padding:"2rem 1rem"}}><div style={{maxWidth:"42rem",margin:"0 auto"}}><h1 style={{fontSize:"1.5rem",fontWeight:"bold",color:"#311850",marginBottom:"1rem"}}>Calculadora da Realidade Financeira Desejada</h1><div style={{background:"white",borderRadius:".75rem",padding:"1.5rem",border:"1px solid #E8E3F0"}}><div style={{marginBottom:"1.5rem"}}><label style={{fontSize:".875rem",fontWeight:"500",color:"#311850",display:"block",marginBottom:".5rem"}}>Meta mensal</label><div style={{textAlign:"center",marginBottom:".75rem"}}><span style={{fontSize:"1.875rem",fontWeight:"bold",color:"#45256D"}}>R$ {m.toLocaleString("pt-BR")}</span></div><input type="range" min="2000" max="50000" step="500" value={m} onChange={e=>sm(+e.target.value)} style={{width:"100%"}}/></div><div style={{marginBottom:"1.5rem"}}><label style={{fontSize:".875rem",fontWeight:"500",color:"#311850",display:"block",marginBottom:".5rem"}}>Pacientes semanais atuais</label><div style={{textAlign:"center",marginBottom:".75rem"}}><span style={{fontSize:"1.875rem",fontWeight:"bold",color:"#45256D"}}>{ps}</span></div><input type="range" min="0" max="40" value={ps} onChange={e=>sps(+e.target.value)} style={{width:"100%"}}/></div>{ps>0&&<div style={{marginBottom:"1.5rem",padding:"1rem",borderRadius:".5rem",background:"#F8F6FA"}}><label style={{fontSize:".875rem",fontWeight:"500",color:"#311850",display:"block",marginBottom:".5rem"}}>Valor médio semanal</label><div style={{textAlign:"center",marginBottom:".75rem"}}><span style={{fontSize:"1.875rem",fontWeight:"bold",color:"#45256D"}}>R$ {vs}</span></div><input type="range" min="80" max="500" step="10" value={vs} onChange={e=>svs(+e.target.value)} style={{width:"100%"}}/></div>}<div style={{marginBottom:"1.5rem"}}><label style={{fontSize:".875rem",fontWeight:"500",color:"#311850",display:"block",marginBottom:".5rem"}}>Pacientes quinzenais atuais</label><div style={{textAlign:"center",marginBottom:".75rem"}}><span style={{fontSize:"1.875rem",fontWeight:"bold",color:"#45256D"}}>{pq}</span></div><input type="range" min="0" max="40" value={pq} onChange={e=>spq(+e.target.value)} style={{width:"100%"}}/></div>{pq>0&&<div style={{marginBottom:"1.5rem",padding:"1rem",borderRadius:".5rem",background:"#F8F6FA"}}><label style={{fontSize:".875rem",fontWeight:"500",color:"#311850",display:"block",marginBottom:".5rem"}}>Valor médio quinzenal</label><div style={{textAlign:"center",marginBottom:".75rem"}}><span style={{fontSize:"1.875rem",fontWeight:"bold",color:"#45256D"}}>R$ {vq}</span></div><input type="range" min="80" max="500" step="10" value={vq} onChange={e=>svq(+e.target.value)} style={{width:"100%"}}/></div>}{(ps>0||pq>0)&&<div style={{marginBottom:"1.5rem",padding:".75rem",borderRadius:".5rem",textAlign:"center",background:"#F0EDF5"}}><p style={{fontSize:".75rem",marginBottom:".25rem",color:"#7F6A93"}}>Faturamento atual:</p><p style={{fontSize:"1.5rem",fontWeight:"bold",color:"#45256D"}}>R$ {fa.toLocaleString("pt-BR")}/mês</p></div>}<div style={{marginBottom:"1.5rem"}}><label style={{fontSize:".875rem",fontWeight:"500",color:"#311850",display:"block",marginBottom:".5rem"}}>Prazo (meses)</label><div style={{textAlign:"center",marginBottom:".75rem"}}><span style={{fontSize:"1.875rem",fontWeight:"bold",color:"#45256D"}}>{mo}</span></div><input type="range" min="1" max="24" value={mo} onChange={e=>smo(+e.target.value)} style={{width:"100%"}}/></div><div style={{marginBottom:"1.5rem"}}><label style={{fontSize:".875rem",fontWeight:"500",color:"#311850",display:"block",marginBottom:".5rem"}}>Valor desejado (novos pacientes)</label><div style={{textAlign:"center",marginBottom:".75rem"}}><span style={{fontSize:"1.875rem",fontWeight:"bold",color:"#45256D"}}>R$ {vd}</span></div><input type="range" min="80" max="500" step="10" value={vd} onChange={e=>svd(+e.target.value)} style={{width:"100%"}}/></div><div style={{borderTop:"1px solid #E8E3F0",paddingTop:"1.5rem"}}>{pn>0?<div style={{textAlign:"center"}}><p style={{fontSize:".875rem",marginBottom:"1rem",color:"#7F6A93"}}>Para atingir R$ {m.toLocaleString("pt-BR")}/mês:</p><div style={{borderRadius:".5rem",padding:"1.25rem",background:"linear-gradient(135deg,#45256D,#311850)",color:"white",marginBottom:"1rem"}}><p style={{fontSize:"2.25rem",fontWeight:"bold"}}>{pn}</p><p style={{fontSize:".875rem"}}>novos pacientes semanais</p></div><div style={{borderRadius:".5rem",padding:"1rem",background:"#F8F6FA",border:"1px solid #E8E3F0"}}><p style={{fontSize:".75rem",fontWeight:"600",marginBottom:".75rem",color:"#311850"}}>Ritmo de captação:</p><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:".75rem",textAlign:"center"}}><div><p style={{fontSize:"1.5rem",fontWeight:"bold",color:"#45256D"}}>{(pn/mo).toFixed(1)}</p><p style={{fontSize:".75rem",color:"#7F6A93"}}>pac/mês</p></div><div><p style={{fontSize:"1.5rem",fontWeight:"bold",color:"#45256D"}}>{Math.round(30*mo/pn)}</p><p style={{fontSize:".75rem",color:"#7F6A93"}}>dias/pac</p></div></div></div></div>:<div style={{borderRadius:".5rem",padding:"1.25rem",textAlign:"center",background:"linear-gradient(135deg,#4CAF50,#2E7D32)",color:"white"}}><p style={{fontSize:"1.25rem",fontWeight:"600"}}>Parabéns!</p><p style={{fontSize:".875rem"}}>Meta atingida!</p></div>}</div></div></div></div>}ReactDOM.createRoot(document.getElementById("root")).render(<App/>);</script></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Calculadora da Realidade Financeira Desejada</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto',sans-serif}
+input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:#E5E7EB;border-radius:9999px;outline:none;cursor:pointer}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:#45256D;cursor:pointer}
+input[type="range"]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#45256D;cursor:pointer;border:none}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState} = React;
+
+function App() {
+    const [meta, setMeta] = useState(10000);
+    const [meses, setMeses] = useState(6);
+    const [valorDesejado, setValorDesejado] = useState(150);
+    const [pacSemanal, setPacSemanal] = useState(0);
+    const [valSemanal, setValSemanal] = useState(150);
+    const [pacQuinzenal, setPacQuinzenal] = useState(0);
+    const [valQuinzenal, setValQuinzenal] = useState(150);
+    const [mostrarFunciona, setMostrarFunciona] = useState(false);
+    const [mostrarCalculo, setMostrarCalculo] = useState(false);
+    const [mostrarForm, setMostrarForm] = useState(false);
+    const [nome, setNome] = useState('');
+    const [email, setEmail] = useState('');
+    const [whatsapp, setWhatsapp] = useState('');
+
+    const fatSemanal = pacSemanal * valSemanal * 4;
+    const fatQuinzenal = pacQuinzenal * valQuinzenal * 2;
+    const fatAtual = fatSemanal + fatQuinzenal;
+    const pacAtualTotal = pacSemanal + pacQuinzenal;
+    const fatFaltando = Math.max(0, meta - fatAtual);
+    const pacNovos = Math.ceil(fatFaltando / (valorDesejado * 4));
+    const pacPorMes = meses > 0 ? (pacNovos / meses).toFixed(1) : 0;
+    const diasPorPac = meses > 0 && pacNovos > 0 ? Math.round((meses * 30) / pacNovos) : 0;
+
+    const sugestoes = [];
+    
+    if (valorDesejado < 200 && pacNovos > 5) {
+        const novoValor = Math.ceil(valorDesejado * 1.3 / 10) * 10;
+        const novosPac = Math.ceil(fatFaltando / (novoValor * 4));
+        sugestoes.push({tipo: 'dica', impacto: 'Alto impacto, baixo esforço', texto: `Aumentando seus honorários para R$ ${novoValor}, você precisaria captar apenas ${novosPac} pacientes (${pacNovos - novosPac} a menos).`});
+    }
+    
+    if (pacNovos > 8) {
+        const grupoVal = Math.ceil(valorDesejado * 0.6 / 10) * 10;
+        const receitaGrupo = grupoVal * 8 * 4;
+        sugestoes.push({tipo: 'ideia', impacto: 'Alto impacto, médio esforço', texto: `Grupo terapêutico com 8 pessoas a R$ ${grupoVal}/sessão geraria R$ ${receitaGrupo.toLocaleString('pt-BR')}/mês.`});
+    }
+    
+    if (pacNovos > 5) {
+        const workshopVal = Math.ceil(valorDesejado * 1.5 / 10) * 10;
+        const receitaWork = workshopVal * 15;
+        sugestoes.push({tipo: 'workshop', impacto: 'Médio impacto, médio esforço', texto: `Workshop mensal com 15 pessoas a R$ ${workshopVal} geraria R$ ${receitaWork.toLocaleString('pt-BR')}/mês.`});
+    }
+    
+    if (fatFaltando > 1000) {
+        const palestras = Math.ceil(fatFaltando / 2000);
+        sugestoes.push({tipo: 'workshop', impacto: 'Médio impacto, médio esforço', texto: `Palestras corporativas a R$ 2.000 cada. Com ${palestras} palestra(s)/mês você complementa a meta.`});
+    }
+    
+    if (pacNovos > 6) {
+        const vendas = Math.ceil(fatFaltando * 0.25 / 97);
+        const receitaProd = vendas * 97;
+        sugestoes.push({tipo: 'produto', impacto: 'Médio impacto, alto esforço inicial', texto: `Produto digital a R$ 97 vendendo ${vendas} unidades/mês geraria R$ ${receitaProd.toLocaleString('pt-BR')}/mês de renda passiva.`});
+    }
+
+    const getCorSugestao = (tipo) => {
+        const cores = {
+            alerta: {bg: '#FEF3E2', border: '#F59E0B', text: '#92400E'},
+            dica: {bg: '#E8F5E8', border: '#4CAF50', text: '#1B5E20'},
+            motivacao: {bg: '#E3F2FD', border: '#2196F3', text: '#0D47A1'},
+            workshop: {bg: '#FFF3E0', border: '#FF9800', text: '#E65100'},
+            produto: {bg: '#E3F2FD', border: '#2196F3', text: '#1565C0'}
+        };
+        return cores[tipo] || {bg: '#F8F6FA', border: '#E8E3F0', text: '#45256D'};
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        alert(`Obrigada, ${nome}! Em breve entraremos em contato via ${email} ou WhatsApp ${whatsapp}.`);
+        setMostrarForm(false);
+    };
+
+    return (
+        <div style={{minHeight: '100vh', background: 'linear-gradient(180deg, #F8F6FA 0%, #ffffff 100%)'}}>
+            <div style={{maxWidth: '42rem', margin: '0 auto', padding: '2rem 1rem'}}>
+                
+                {/* Header */}
+                <div style={{marginBottom: '2rem'}}>
+                    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem'}}>
+                        <h1 style={{fontSize: '1.5rem', fontWeight: 'bold', color: '#311850'}}>
+                            Calculadora da Realidade Financeira Desejada
+                        </h1>
+                        <button 
+                            onClick={() => setMostrarFunciona(!mostrarFunciona)}
+                            style={{
+                                fontSize: '.875rem',
+                                padding: '.5rem 1rem',
+                                borderRadius: '.5rem',
+                                background: mostrarFunciona ? '#45256D' : '#F8F6FA',
+                                color: mostrarFunciona ? 'white' : '#45256D',
+                                border: '1px solid #E8E3F0',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '.5rem',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            Como funciona?
+                            <span style={{fontSize: '10px'}}>{mostrarFunciona ? '▲' : '▼'}</span>
+                        </button>
+                    </div>
+
+                    {mostrarFunciona && (
+                        <div style={{marginBottom: '1.5rem', padding: '1.25rem', borderRadius: '.75rem', fontSize: '.875rem', background: '#F8F6FA', border: '1px solid #E8E3F0'}}>
+                            <p style={{fontWeight: '600', marginBottom: '.75rem', color: '#311850'}}>Como funciona esta calculadora</p>
+                            <p style={{marginBottom: '.75rem', color: '#7F6A93'}}>
+                                Esta ferramenta ajuda você a planejar quantos pacientes fixos são necessários para atingir sua meta mensal de faturamento.
+                            </p>
+                            <ul style={{marginLeft: '1rem', color: '#7F6A93'}}>
+                                <li>• Sua meta financeira mensal recorrente</li>
+                                <li>• Quantos pacientes você já tem (semanais e quinzenais separados)</li>
+                                <li>• Os valores médios que você cobra atualmente</li>
+                                <li>• O prazo para construir essa agenda</li>
+                                <li>• O valor desejado para novos pacientes</li>
+                            </ul>
+                        </div>
+                    )}
+
+                    <p style={{fontSize: '.875rem', color: '#7F6A93'}}>
+                        Coloque sua meta, a sua realidade atual e veja, na prática e em poucos passos, como fazer para atingi-la.
+                    </p>
+                </div>
+
+                {/* Formulário */}
+                <div style={{background: 'white', borderRadius: '.75rem', padding: '1.5rem', marginBottom: '1.5rem', border: '1px solid #E8E3F0'}}>
+                    
+                    {/* Meta Mensal */}
+                    <div style={{marginBottom: '1.5rem'}}>
+                        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '.5rem'}}>
+                            <label style={{fontSize: '.875rem', fontWeight: '500', color: '#311850'}}>
+                                Meta de faturamento mensal
+                            </label>
+                            <span style={{fontSize: '.75rem', padding: '.25rem .5rem', borderRadius: '.25rem', background: '#F0EDF5', color: '#7F6A93', cursor: 'default'}}>
+                                Recorrente
+                            </span>
+                        </div>
+                        <div style={{textAlign: 'center', marginBottom: '.75rem'}}>
+                            <span style={{fontSize: '1.875rem', fontWeight: 'bold', color: '#45256D'}}>
+                                R$ {meta.toLocaleString('pt-BR')}
+                            </span>
+                        </div>
+                        <input 
+                            type="range" 
+                            min="2000" 
+                            max="50000" 
+                            step="500" 
+                            value={meta} 
+                            onChange={(e) => setMeta(Number(e.target.value))}
+                        />
+                    </div>
+
+                    {/* Pacientes Semanais */}
+                    <div style={{marginBottom: '1.5rem'}}>
+                        <label style={{fontSize: '.875rem', fontWeight: '500', color: '#311850', display: 'block', marginBottom: '.5rem'}}>
+                            Pacientes semanais que você já tem
+                        </label>
+                        <div style={{textAlign: 'center', marginBottom: '.75rem'}}>
+                            <span style={{fontSize: '1.875rem', fontWeight: 'bold', color: '#45256D'}}>{pacSemanal}</span>
+                            <p style={{fontSize: '.75rem', marginTop: '.25rem', color: '#7F6A93'}}>Atendimento semanal (4x/mês)</p>
+                        </div>
+                        <input 
+                            type="range" 
+                            min="0" 
+                            max="40" 
+                            value={pacSemanal} 
+                            onChange={(e) => setPacSemanal(Number(e.target.value))}
+                        />
+                    </div>
+
+                    {/* Valor Semanal */}
+                    {pacSemanal > 0 && (
+                        <div style={{marginBottom: '1.5rem', padding: '1rem', borderRadius: '.5rem', background: '#F8F6FA'}}>
+                            <label style={{fontSize: '.875rem', fontWeight: '500', color: '#311850', display: 'block', marginBottom: '.5rem'}}>
+                                Valor médio por sessão (semanais)
+                            </label>
+                            <div style={{textAlign: 'center', marginBottom: '.75rem'}}>
+                                <span style={{fontSize: '1.875rem', fontWeight: 'bold', color: '#45256D'}}>R$ {valSemanal}</span>
+                            </div>
+                            <input 
+                                type="range" 
+                                min="80" 
+                                max="500" 
+                                step="10" 
+                                value={valSemanal} 
+                                onChange={(e) => setValSemanal(Number(e.target.value))}
+                            />
+                        </div>
+                    )}
+
+                    {/* Pacientes Quinzenais */}
+                    <div style={{marginBottom: '1.5rem'}}>
+                        <label style={{fontSize: '.875rem', fontWeight: '500', color: '#311850', display: 'block', marginBottom: '.5rem'}}>
+                            Pacientes quinzenais que você já tem
+                        </label>
+                        <div style={{textAlign: 'center', marginBottom: '.75rem'}}>
+                            <span style={{fontSize: '1.875rem', fontWeight: 'bold', color: '#45256D'}}>{pacQuinzenal}</span>
+                            <p style={{fontSize: '.75rem', marginTop: '.25rem', color: '#7F6A93'}}>Atendimento quinzenal (2x/mês)</p>
+                        </div>
+                        <input 
+                            type="range" 
+                            min="0" 
+                            max="40" 
+                            value={pacQuinzenal} 
+                            onChange={(e) => setPacQuinzenal(Number(e.target.value))}
+                        />
+                    </div>
+
+                    {/* Valor Quinzenal */}
+                    {pacQuinzenal > 0 && (
+                        <div style={{marginBottom: '1.5rem', padding: '1rem', borderRadius: '.5rem', background: '#F8F6FA'}}>
+                            <label style={{fontSize: '.875rem', fontWeight: '500', color: '#311850', display: 'block', marginBottom: '.5rem'}}>
+                                Valor médio por sessão (quinzenais)
+                            </label>
+                            <div style={{textAlign: 'center', marginBottom: '.75rem'}}>
+                                <span style={{fontSize: '1.875rem', fontWeight: 'bold', color: '#45256D'}}>R$ {valQuinzenal}</span>
+                            </div>
+                            <input 
+                                type="range" 
+                                min="80" 
+                                max="500" 
+                                step="10" 
+                                value={valQuinzenal} 
+                                onChange={(e) => setValQuinzenal(Number(e.target.value))}
+                            />
+                        </div>
+                    )}
+
+                    {/* Faturamento Atual */}
+                    {(pacSemanal > 0 || pacQuinzenal > 0) && (
+                        <div style={{marginBottom: '1.5rem', padding: '.75rem', borderRadius: '.5rem', textAlign: 'center', background: '#F0EDF5'}}>
+                            <p style={{fontSize: '.75rem', marginBottom: '.25rem', color: '#7F6A93'}}>Faturamento atual total:</p>
+                            <p style={{fontSize: '1.5rem', fontWeight: 'bold', color: '#45256D'}}>
+                                R$ {fatAtual.toLocaleString('pt-BR')}/mês
+                            </p>
+                            <p style={{fontSize: '.75rem', marginTop: '.25rem', color: '#7F6A93'}}>
+                                {pacAtualTotal} paciente{pacAtualTotal !== 1 ? 's' : ''} na agenda
+                            </p>
+                        </div>
+                    )}
+
+                    {/* Prazo */}
+                    <div style={{marginBottom: '1.5rem'}}>
+                        <label style={{fontSize: '.875rem', fontWeight: '500', color: '#311850', display: 'block', marginBottom: '.5rem'}}>
+                            Prazo para construir a agenda
+                        </label>
+                        <div style={{textAlign: 'center', marginBottom: '.75rem'}}>
+                            <span style={{fontSize: '1.875rem', fontWeight: 'bold', color: '#45256D'}}>
+                                {meses} {meses === 1 ? 'mês' : 'meses'}
+                            </span>
+                        </div>
+                        <input 
+                            type="range" 
+                            min="1" 
+                            max="24" 
+                            value={meses} 
+                            onChange={(e) => setMeses(Number(e.target.value))}
+                        />
+                    </div>
+
+                    {/* Valor Desejado */}
+                    <div style={{marginBottom: '1.5rem'}}>
+                        <label style={{fontSize: '.875rem', fontWeight: '500', color: '#311850', display: 'block', marginBottom: '.5rem'}}>
+                            Valor desejado para novos pacientes (semanal)
+                        </label>
+                        <div style={{textAlign: 'center', marginBottom: '.75rem'}}>
+                            <span style={{fontSize: '1.875rem', fontWeight: 'bold', color: '#45256D'}}>R$ {valorDesejado}</span>
+                        </div>
+                        <input 
+                            type="range" 
+                            min="80" 
+                            max="500" 
+                            step="10" 
+                            value={valorDesejado} 
+                            onChange={(e) => setValorDesejado(Number(e.target.value))}
+                        />
+                    </div>
+
+                    {/* Resultados */}
+                    <div style={{borderTop: '1px solid #E8E3F0', paddingTop: '1.5rem'}}>
+                        {pacNovos > 0 ? (
+                            <>
+                                <div style={{textAlign: 'center', marginBottom: '1rem'}}>
+                                    <p style={{fontSize: '.875rem', marginBottom: '.75rem', color: '#7F6A93'}}>
+                                        Para faturar R$ {meta.toLocaleString('pt-BR')} mensais, você precisa captar:
+                                    </p>
+                                </div>
+
+                                <div style={{borderRadius: '.5rem', padding: '1.25rem', textAlign: 'center', background: 'linear-gradient(135deg, #45256D 0%, #311850 100%)', color: 'white', marginBottom: '1rem'}}>
+                                    <p style={{fontSize: '2.25rem', fontWeight: 'bold', marginBottom: '.25rem'}}>{pacNovos}</p>
+                                    <p style={{fontSize: '.875rem', opacity: .9}}>novos pacientes semanais</p>
+                                </div>
+
+                                <div style={{borderRadius: '.5rem', padding: '1rem', background: '#F8F6FA', border: '1px solid #E8E3F0', marginBottom: '1rem'}}>
+                                    <p style={{fontSize: '.75rem', fontWeight: '600', marginBottom: '.75rem', textAlign: 'center', color: '#311850'}}>
+                                        Ritmo de captação necessário
+                                    </p>
+                                    <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '.75rem', textAlign: 'center'}}>
+                                        <div>
+                                            <p style={{fontSize: '1.5rem', fontWeight: 'bold', color: '#45256D'}}>{pacPorMes}</p>
+                                            <p style={{fontSize: '.75rem', color: '#7F6A93'}}>pacientes/mês</p>
+                                        </div>
+                                        <div>
+                                            <p style={{fontSize: '1.5rem', fontWeight: 'bold', color: '#45256D'}}>{diasPorPac}</p>
+                                            <p style={{fontSize: '.75rem', color: '#7F6A93'}}>dias/paciente</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={() => setMostrarCalculo(!mostrarCalculo)}
+                                    style={{
+                                        width: '100%',
+                                        fontSize: '.75rem',
+                                        padding: '.75rem',
+                                        borderRadius: '.5rem',
+                                        background: '#F8F6FA',
+                                        color: '#45256D',
+                                        border: '1px solid #E8E3F0',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '.5rem',
+                                        marginBottom: '1rem',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    {mostrarCalculo ? 'Ocultar' : 'Ver'} como calculamos
+                                    <span style={{fontSize: '10px'}}>{mostrarCalculo ? '▲' : '▼'}</span>
+                                </button>
+
+                                {mostrarCalculo && (
+                                    <div style={{padding: '1rem', borderRadius: '.5rem', fontSize: '.75rem', background: '#F8F6FA', border: '1px solid #E8E3F0', marginBottom: '1rem'}}>
+                                        <p style={{fontWeight: '600', marginBottom: '.5rem', color: '#311850'}}>Como calculamos:</p>
+                                        <div style={{color: '#7F6A93'}}>
+                                            <p><strong>1.</strong> Faturamento semanal: {pacSemanal} × R$ {valSemanal} × 4 = R$ {fatSemanal.toLocaleString('pt-BR')}</p>
+                                            <p><strong>2.</strong> Faturamento quinzenal: {pacQuinzenal} × R$ {valQuinzenal} × 2 = R$ {fatQuinzenal.toLocaleString('pt-BR')}</p>
+                                            <p><strong>3.</strong> Faturamento total atual: R$ {fatAtual.toLocaleString('pt-BR')}</p>
+                                            <p><strong>4.</strong> Falta para meta: R$ {meta.toLocaleString('pt-BR')} - R$ {fatAtual.toLocaleString('pt-BR')} = R$ {fatFaltando.toLocaleString('pt-BR')}</p>
+                                            <p><strong>5.</strong> Novos pacientes: R$ {fatFaltando.toLocaleString('pt-BR')} ÷ (R$ {valorDesejado} × 4) = {pacNovos}</p>
+                                            <p><strong>6.</strong> Em {meses} meses: {pacNovos} ÷ {meses} = {pacPorMes} pacientes/mês</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <div style={{borderRadius: '.5rem', padding: '1.25rem', textAlign: 'center', background: 'linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)', color: 'white'}}>
+                                <p style={{fontSize: '1.25rem', marginBottom: '.5rem', fontWeight: '600'}}>Parabéns!</p>
+                                <p style={{fontSize: '.875rem'}}>Você já atingiu sua meta financeira!</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Sugestões */}
+                {sugestoes.length > 0 && pacNovos > 0 && (
+                    <div style={{marginBottom: '1.5rem'}}>
+                        <h2 style={{fontSize: '1.125rem', fontWeight: 'bold', marginBottom: '.75rem', color: '#311850'}}>
+                            Estratégias de otimização
+                        </h2>
+                        <p style={{fontSize: '.75rem', marginBottom: '1rem', color: '#7F6A93'}}>
+                            Do menor esforço para o maior impacto financeiro
+                        </p>
+                        <div style={{display: 'flex', flexDirection: 'column', gap: '.75rem'}}>
+                            {sugestoes.map((sug, index) => {
+                                const cores = getCorSugestao(sug.tipo);
+                                return (
+                                    <div 
+                                        key={index} 
+                                        style={{
+                                            borderRadius: '.5rem',
+                                            padding: '1rem',
+                                            fontSize: '.875rem',
+                                            background: cores.bg,
+                                            border: `1px solid ${cores.border}`
+                                        }}
+                                    >
+                                        <p style={{fontSize: '.75rem', fontWeight: '600', marginBottom: '.25rem', textTransform: 'uppercase', color: cores.text}}>
+                                            {sug.impacto}
+                                        </p>
+                                        <p style={{color: '#311850'}}>
+                                            {sug.texto}
+                                        </p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
+
+                {/* Formulário de Contato */}
+                <div style={{background: 'white', borderRadius: '.75rem', padding: '1.5rem', marginBottom: '1.5rem', border: '1px solid #E8E3F0'}}>
+                    <h3 style={{fontSize: '1.125rem', fontWeight: 'bold', marginBottom: '.5rem', color: '#311850'}}>
+                        Quer saber como tirar tudo isso do papel?
+                    </h3>
+                    <p style={{fontSize: '.875rem', marginBottom: '1rem', color: '#7F6A93'}}>
+                        Sabemos que nem sempre é fácil executar. Deixe seus dados e vamos te ajudar a colocar esse planejamento em prática!
+                    </p>
+                    
+                    {!mostrarForm ? (
+                        <button
+                            onClick={() => setMostrarForm(true)}
+                            style={{
+                                width: '100%',
+                                padding: '.75rem',
+                                borderRadius: '.5rem',
+                                fontSize: '.875rem',
+                                fontWeight: '500',
+                                color: 'white',
+                                background: '#45256D',
+                                border: 'none',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            Quero ajuda para executar
+                        </button>
+                    ) : (
+                        <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column', gap: '.75rem'}}>
+                            <input
+                                type="text"
+                                placeholder="Seu nome"
+                                value={nome}
+                                onChange={(e) => setNome(e.target.value)}
+                                required
+                                style={{
+                                    width: '100%',
+                                    padding: '.75rem',
+                                    borderRadius: '.5rem',
+                                    fontSize: '.875rem',
+                                    border: '1px solid #E8E3F0',
+                                    outline: 'none'
+                                }}
+                            />
+                            <input
+                                type="email"
+                                placeholder="Seu e-mail"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                style={{
+                                    width: '100%',
+                                    padding: '.75rem',
+                                    borderRadius: '.5rem',
+                                    fontSize: '.875rem',
+                                    border: '1px solid #E8E3F0',
+                                    outline: 'none'
+                                }}
+                            />
+                            <input
+                                type="tel"
+                                placeholder="Seu WhatsApp"
+                                value={whatsapp}
+                                onChange={(e) => setWhatsapp(e.target.value)}
+                                required
+                                style={{
+                                    width: '100%',
+                                    padding: '.75rem',
+                                    borderRadius: '.5rem',
+                                    fontSize: '.875rem',
+                                    border: '1px solid #E8E3F0',
+                                    outline: 'none'
+                                }}
+                            />
+                            <p style={{fontSize: '.75rem', color: '#9C8FC2'}}>Todos os dados são obrigatórios</p>
+                            <button
+                                type="submit"
+                                style={{
+                                    width: '100%',
+                                    padding: '.75rem',
+                                    borderRadius: '.5rem',
+                                    fontSize: '.875rem',
+                                    fontWeight: '500',
+                                    color: 'white',
+                                    background: '#45256D',
+                                    border: 'none',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Enviar solicitação
+                            </button>
+                        </form>
+                    )}
+                </div>
+
+                {/* Footer */}
+                <div style={{textAlign: 'center', fontSize: '.75rem', color: '#9C8FC2'}}>
+                    <p style={{marginBottom: '.5rem'}}>Calculadora da realidade financeira desejada • 2024</p><p>Todos os cálculos são estimativas. Considere 10-15% de faltas na prática real.</p>
+                </div>
+            </div>
+        </div>
+    );
+}ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
+````
